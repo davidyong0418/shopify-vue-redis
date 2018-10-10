@@ -1,0 +1,8 @@
+<div class="integrabeauty-footer__links-group col-xs-12 col-sm-4 col-md-2 col-lg-2 col-xl-2">
+  <h4>{{ settings[title] }}</h4>
+  <ul>
+    {% for link in linklists[settings[footerLinks]].links %}
+    <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+    {% endfor %}
+  </ul>
+</div>

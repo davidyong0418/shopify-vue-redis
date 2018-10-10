@@ -1,0 +1,118 @@
+<!-- <div class="ib-slogan" style="display:none">{{ settings.header_slogan }} <i class="fa fa-close close"></i></div> -->
+<header id="header" class="header-design10">
+  <div class="header__hamburger">
+    <div id="menuToggle">
+      <input type="checkbox" />
+      <span class="hamburger"></span> 
+      <span class="hamburger"></span> 
+      <span class="hamburger"></span>
+    </div>
+  </div>
+  <div class="header__logo" itemscope itemtype="http://schema.org/Organization">
+    <a href="/" itemprop="url"><img src="{{ headerlogo }}" alt="logo" itemprop="logo"></a> 
+  </div>
+  <div class="header__main-menu">
+    {% include "integrabeauty-main-menu" %}
+  </div>
+  <div class="header__icons">
+    {% include "integrabeauty-menu-cart" %}
+  </div>
+  <script>
+//   ;(function () {
+//     var slogan = document.querySelector('div.ib-slogan');
+//     if (ibLocalStore.showSlogan(slogan.textContent)) {
+//       slogan.style.display = 'block';
+//       var sloganClose = document.querySelector('div.ib-slogan .close');
+//       sloganClose.addEventListener('click', function () {
+//         slogan.style.display = 'none';
+//         ibLocalStore.sloganVisible = false;
+//       });
+//     }
+//   }());
+  </script>
+</header>
+<div id="menu" class="closed">
+  <a href="/pages/mothers-day-sale" class="holiday-collection-button">MOTHER'S DAY SALE EVENT</a>
+  <a href="/pages/shop-the-gallery" class="holiday-collection-button">SHOP THE GALLERY</a>
+  <a href="/blogs/hair-talk" class="holiday-collection-button">HAIR TALK BLOG</a>
+<!--   <a href="#" data-st-intent="st:core:home" class="holiday-collection-button" onclick="window.toggleMenu()">REWARDS PROGRAM</a> -->
+  <section class="submenu">
+    <ul>
+    {% for link in linklists.shop.links %}
+      <li>
+        <div class="submenu-header">{{ link.title | link_to: link.url }}</div>
+        {% unless linklists[link.handle].empty? %}<ul>{% endunless %}
+        {% for child_level in linklists[link.handle].links offset: start %}
+        <li>
+          <a href="{{ child_level.url | downcase }}">
+            <span class="ib-shop-menu__title">{{ child_level.title }}</span>
+          </a>
+        </li>
+        {% endfor %}
+        {% unless linklists[link.handle].empty? %}</ul>{% endunless %}
+      </li>
+    {% endfor %}
+    </ul>
+  </section>
+  <section class="submenu">
+    <h2 class="menu-title">Help</h2>
+    <ul class="open">
+      <li><a href="https://langehair.com/pages/brand-ambassadors">Brand Ambassador Program</a></li>
+    {% for link in linklists.footer-customer-service.links %}
+       <li>{{ link.title | link_to: link.url }}</li>
+    {% endfor %}
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+  </section>
+</div>
+<script>
+$(document).ready(function() {
+  document.querySelector('#menuToggle input').checked = false;
+  window.toggleMenu = function (e) {
+    window.scroll(0, 0); 
+    if ($('#menu').hasClass('closed')) {
+      document.querySelector('#menuToggle input').checked = true;
+      $('body').addClass('noscroll');
+      $('#header').addClass('sticky');
+      $('#menu').removeClass('closed').addClass('open').animate({ left: (window.innerWidth + 50) + 'px' });
+    } else {
+      document.querySelector('#menuToggle input').checked = false;
+      $('body').removeClass('noscroll');
+      $('#header').removeClass('sticky');
+      $('#menu').removeClass('open').addClass('closed').animate({ left: '0px' });
+    }
+  };
+  $('#menuToggle').click(window.toggleMenu);
+  if($('#menu').length > 0) {
+//     function close_accordion_section() {
+//       $('#menu h2.menu-title i.fa').removeClass('fa-minus').addClass('fa-plus');
+//       $('#menu ul.open').slideUp(300).removeClass('open').addClass('closed');
+//     }
+
+    $('#menu ul.closed').slideUp(300);
+    
+    $('#menu h2.menu-title').click(function(e) {
+      e.preventDefault();
+      
+      var openItem = false;
+      if(!$(this).next().hasClass('open')) {
+        openItem = true;
+      }
+
+//       close_accordion_section();
+
+      if(openItem) {
+        var currentAccordionItem = $(this);
+        
+        window.setTimeout(function() {
+          $(currentAccordionItem).next().removeClass('closed').slideDown(300).addClass('open');
+          $(currentAccordionItem).children().removeClass('fa-plus').addClass('fa-minus');
+        }, 300);
+      }
+    });
+  }
+});
+</script>
+{% include "integrabeauty-submenu" %}

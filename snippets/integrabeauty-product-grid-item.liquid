@@ -1,0 +1,167 @@
+{% comment %} Price to show. {% endcomment %}
+{% assign sale_on = false %}
+{% if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price %}
+  {% assign sale_on = true %}
+{% endif %}
+
+{% comment %} Main Image URL. {% endcomment %}
+{% assign main_url_image = product.featured_image %}
+
+{% assign hover_url_image = "" %}
+{% if product.images[1] %}
+	{% assign hover_url_image = product.images[1].src %}
+{% else %}
+	{% assign hover_url_image = product.images[0].src %}
+{% endif %}
+
+{% comment %}
+	date_difference = 60 * 60 * 24 * day counter, this is new product period in seconds
+{% endcomment %}
+ 	{% assign date_now = 'now' | date: "%s" %}
+ 	{% assign date_published = product.published_at | date: "%s" %}
+	{% assign date_difference = date_now | minus: date_published %}
+	{% assign date_limit = 86400 | times: settings.new_product_period %}
+	{% assign pr_variant = product.selected_or_first_available_variant %}
+	{% comment%} Facebook pixel updates {% endcomment %}
+	{% assign pr_sku = product.selected_or_first_available_variant.sku %}
+    {% assign pr_title = product.title | escape %}
+	{% assign pr_collection = collection.title | escape %}
+	{% assign pr_price = product.price | money_without_currency %}
+	{% assign pr_id = product.id %}
+    {% assign pr_varId = product.selected_or_first_available_variant.id %}
+
+<!-- product -->
+<div class="product{% if smallproduct %} smallproduct{% endif %} {{ pr_variant.id }}{% unless product.available %} sold-out{% endunless %}">
+  {% if product.available %}
+      {% if product.variants.size > 1 %}
+          {% assign func = "" %}
+      {% else %}
+          {% assign func = "Shopify.addItem(" | append: pr_variant.id | append: ", 1)" %}
+  		  {% assign func2 = "fbAddToCart(" | append: pr_price | append: ", '" | append: pr_sku | append: "', '" | append: "shopify_" | append: pr_id | append: "_" | append: pr_varId | append: "', '" | append: pr_collection | append: "', '" | append: pr_title | append: "', 'category_page')" %}
+      {% endif %}
+  {% endif %}
+  
+    <!-- product image -->
+    <div class="product__inside__image">
+
+      {% if product.images.size > 1 and product.description contains "[item-gallery]" %}
+      <div class="product__inside__carousel slide" data-ride="carousel">
+        <div class="carousel-inner" role="listbox">
+          {% for image in product.images %}
+          <div class="item{% if forloop.first %} active{% endif %}">
+            <a href="{{ product.url | within: collection }}"><img src="{{ image | product_img_url: 'grande' }}" alt="{{ product.featured_image.alt | escape }}"></a>
+          </div>
+          {% endfor %}
+        </div>
+        <!-- Controls --> 
+        <a class="carousel-control next"></a> <a class="carousel-control prev"></a> 
+      </div>
+      {% else %}
+      <a href="{{ product.url | within: collection }}">
+		<img src="{{ main_url_image | product_img_url: 'grande' }}" alt="{{ product.featured_image.alt | escape }}"/>
+      </a>
+      {% endif %}
+      
+      {% unless product.available %}
+      <div class="product__label--sold-out"><span>{{ "products.product.sold_out" | t }}</span></div>
+      {% else %}
+
+      {% if settings.product_item_showqv %}<a href="#" data-toggle="modal" data-target="#quickViewModal" class="quick-view" data-value="{{ product.url | within: collection }}"><b><span class="icon icon-visibility"></span> {{ "products.general.quick_view" | t }}</b></a>{% endif %}
+      {% endunless %}
+      
+      {% if product.description contains '[countdown]' and product.available %}
+        {% assign countdown = product.content | split: '[/countdown]' | first %}
+        {% assign countdown = countdown | split: '[countdown]' | last %}
+        {% assign date = countdown | split: ' ' | first | split: '/' %}
+        {% assign time = countdown | split: ' ' | last | split: ':' %}
+        <div class="countdown_box">
+          <div class="countdown_inner">
+            <div id="{{ product.id }}{{ productCount }}"></div>
+          </div>
+        </div>
+        <script>
+          jQuery(function ($) {
+              // countdown ini
+              var yyyy = {{ date[0] }};
+              var mm = {{ date[1] | minus:1 }};
+              var dd = {{ date[2] }};
+              var hour = {{ time[0] }};
+              var min = {{ time[1] }};
+              var sec = {{ time[2] }};
+
+              var sH = {{'now' | date: "%H" }};//s = shopify
+              var sD = {{'now' | date: "%-d" }};
+              var sM = {{'now' | date: "%m" }};
+              var sY = {{'now' | date: "%Y" }};
+
+              var qH = new Date();
+              var qD = qH.getDate();//q = jQuery
+              var qM = qH.getMonth() + 1;
+              var qY = qH.getFullYear();
+              var qH = qH.getHours();
+
+              if(qD > sD) {
+                qH += 24;
+              }
+              else {
+                if(qD < sD) {
+                  if(qM > sM) {
+                    qH += 24;
+                  }
+                  else {
+                    if(qY > sY) {
+                      qH += 24;
+                    }
+                    else {
+                      sH += 24;
+                    }
+                  }
+                }
+              }
+
+              var fH = sH - qH;
+
+              if ($("#{{ product.id }}{{ productCount }}").length > 0){$('#{{ product.id }}{{ productCount }}').countdown({until: new Date(yyyy, mm, dd, hour, min, sec), timezone: fH});}
+          });
+        </script>
+      {% endif %}
+    </div>
+    <div class="product__inside__name">
+      <a href="{{ product.url | within: collection }}">
+        <h2 class="product_title">{{ product.metafields.product.title }}</h2>
+        <div class="product_title__divider"></div>
+        <h3 class="product_subtitle">{{ product.metafields.product.subtitle }}</h3>
+      </a>
+    </div>
+  	<div class="ib-yotpo-star-rating">
+      <div class="yotpo bottomLine" data-product-id="{{ product.id }}"></div>
+    </div>
+    {% if product.available %}
+      {% if sale_on %}
+      <span class="price-box__old">{{ product.selected_or_first_available_variant.compare_at_price | money }}</span>
+      {% endif %}
+      {% if settings.product_item_show_cart %}
+        <a {% if func == "" %}{% if settings.product_item_showqv %}href="#" data-toggle="modal" data-target="#quickViewModal" data-value="{{ product.url | within: collection }}" {% else %}href="{{ product.url | within: collection }}"{% endif %}{% else %}href="javascript:void(0);" onclick="{{ func }}; {{ func2 }}; return false;"{% endif %} class="ib-cart-button">
+          {% if sale_on %}
+          ADD<span class="separator">|</span>{{ product.selected_or_first_available_variant.price | money }}
+          {% else %}
+          ADD<span class="separator">|</span>{{ product.selected_or_first_available_variant.price | money }}
+          {% endif %}
+        </a>
+  		{%if product.metafields.product.backorder %}
+  			<div class="warning-box center"><a href="{{ product.url | within: collection }}">On backorder, see ship date</a></div>
+  		{% endif %}
+      {% endif %}
+    {% else %}
+  	  {% if sale_on %}
+      <span class="price-box__old">{{ product.selected_or_first_available_variant.compare_at_price | money }}</span>
+      {% endif %}
+  	  <a href="{{ product.url | within: collection }}" class="ib-cart-button compact">SOLD OUT<span class="separator">|</span>{{ product.selected_or_first_available_variant.price | money }}</a>
+  	  <a href='#' class='BIS_trigger' data-product-data='{{ product | json | escape }}' style="color: #eca2b9;" data-variant-id="{{ product.selected_or_first_available_variant.id }}">
+        Email when available
+      </a>
+    {% endif %}
+</div>
+<!-- /product -->
+
+{% assign productCount = productCount | plus: 1 %}

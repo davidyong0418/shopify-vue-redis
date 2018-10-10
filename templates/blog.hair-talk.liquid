@@ -1,0 +1,147 @@
+{% assign articles_used = '' %}
+{% include 'blog-header' %}
+<div class="container blog">
+  <div class="hair-talk-hero-article">
+    {% assign has_hero_post = false %}
+    {% for article in blog.articles %}
+      {% if article.tags contains 'Hero' and has_hero_post == false %}
+        <a href="{{ article.url }}" class="post-image" style="background: url({{ article.image.src | img_url: '1000x' }}) top left no-repeat">
+          <div class="post-details">
+            <span class="post-category">{{ article.tags | join: '' | remove: 'Hero' | remove: 'Featured' | remove: 'Popular' | remove: 'Category' }}</span>
+            {% assign articles_used = articles_used | append: article.title | append: ',' %}
+            <span class="post-title">{{ article.title }}</span>
+          </div>
+        </a>
+        <span class="post-time">posted at <time><span>{{ article.published_at | date: "%d" }}</span>{{ article.published_at | date: "%b" | downcase }}</time></span>
+        <span class="post-excerpt">{% if article.excerpt.size > 0 %}{{ article.excerpt | strip_html }}{% else %}{{ article.content | strip_html | truncatewords: settings.truncate, settings.truncate_last_symbols }}{% endif %}</span>
+    	{% assign has_hero_post = true %}
+      {% endif %}
+    {% endfor %}
+  </div>
+  <div class="hair-talk-article-list">
+    {% capture article_list %}
+      {% for article in blog.articles %}
+    	{% if article.tags contains 'Hero' or article.tags contains 'Category' %}
+    	{% else %}
+          {{ article.url }}|separator|{{ article.image.src | img_url: '700x' }}|separator|{{ article.image.alt }}|separator|{{ article.tags | join: '' | remove: 'Hero' | remove: 'Featured' | remove: 'Popular' | remove: 'Category' }}|separator|{{ article.title }}|separator|{{ article.published_at | date: "%d" }}|separator|{{ article.published_at | date: "%b" | downcase }}|separator|{% if article.excerpt.size > 0 %}{{ article.excerpt | strip_html }}{% else %}{{ article.content | strip_html | truncatewords: settings.truncate, settings.truncate_last_symbols }}{% endif %}:endarticle:
+    	{% endif %}
+      {% endfor %}
+    {% endcapture %}
+    {% assign article_array = article_list | split: ':endarticle:'%}
+    {% paginate blog.articles by 4 %}
+      {% assign i = paginate.current_offset | minus: 1 | plus: forloop.index0 %}
+      {% if i < 0 %}{% assign i = 0 %}{% endif %}
+      {% assign last_index = article_array.size | minus: 1 %}
+      {% for article in blog.articles %}
+      {% if i == last_index %}
+      {% else %}
+        {% assign a = article_array[i] | split: '|separator|' %}
+        <a href="{{ a[0] }}" class="post-image" style="background: url({{ a[1] }}) top left no-repeat">
+          <div class="post-details">
+            <span class="post-category">{{ a[3] }}</span>
+            {% assign articles_used = articles_used | append: a[4] | append: ',' %}
+            <span class="post-title">{{ a[4] }}</span>
+          </div>
+        </a>
+        <span class="post-time">posted at <time><span>{{ a[5] }}</span>{{ a[6] }}</time></span>
+        <span class="post-excerpt">{{ a[7] }}</span>
+        {% assign i = i | plus: 1 %}
+      {% endif %}
+      {% endfor %}
+      {% assign article_pages = article_array.size | divided_by: 4 | ceil %}
+      {% if article_pages > 1 %}
+          {% if paginate.current_page > 1 %}
+            {% assign url = paginate.previous.url %}
+          {% else %}
+            {% assign url = paginate.next.url %}
+          {% endif %}
+
+          {% assign _url = url %}
+          {% assign checkSearch = url | split: '&' | first %}
+          {% assign checkSearch = url | split: checkSearch | last %}
+          {% assign url = url | split: '?page' | first %}
+          {% assign checkSearchLast = '' %}
+
+          {% if _url contains '&' %}
+          {% assign _split = _url | split: '?page' | last %}
+          {% assign _split = _split | split: '&' | first %}
+          {% assign _split = '?page' | append: _split %}
+          {% assign checkSearchLast = _url | split: _split | last %}
+          {% endif %}
+
+          <ul class="pagination">
+            {% if paginate.previous.is_link and paginate.pages > 4 %}
+                <li><a href="{{ paginate.previous.url }}"><span class="icon icon-chevron_left"></span></a></li>
+            {% endif %}
+
+            {% if article_pages > 4 %}
+              {% assign max = article_pages | minus: paginate.current_page %}
+              {% if max > 4 %}
+                {% for part in (paginate.current_page..article_pages) limit: 4 %}
+                <li {% if paginate.current_page == part %}class="active"{% endif %}>
+                  <a {% unless paginate.current_page == part %}href="{{ url }}?page={{ part }}{{ checkSearchLast }}"{% endunless %}>{{ part }}</a>
+                <li>
+                {% endfor %}
+              {% else %}
+                {% assign min = article_pages | minus: 3 %}
+                {% for part in (min..article_pages) limit: 4 %}
+                <li {% if paginate.current_page == part %}class="active"{% endif %}>
+                  <a {% unless paginate.current_page == part %}href="{{ url }}?page={{ part }}{{ checkSearchLast }}"{% endunless %}>{{ part }}</a>
+                <li>
+                {% endfor %}
+                {% if article_pages == paginate.current_page %}<li class="active"><a>{{ paginate.current_page }}</a></li>{% endif %}
+              {% endif %}
+
+            {% else %}
+              {% for part in paginate.parts limit: article_pages %}
+                  {% if part.is_link %}
+                    <li>{{ part.title | link_to: part.url}}</li>
+                  {% else %}
+                    <li class="active"><a>{{ part.title }}</a></li>
+                  {% endif %}
+              {% endfor %}
+            {% endif %}
+
+            {% if paginate.next.is_link and article_pages > 4 %}
+                <li><a href="{{ url }}?page={{ article_pages }}{{ checkSearchLast }}">{{ article_pages }}</a></li>
+            {% endif %}
+
+            {% if paginate.next.is_link and paginate.current_page < article_pages %}
+                <li><a href="{{ paginate.next.url }}"><span class="icon icon-chevron_right"></span></a></li>
+            {% endif %}
+          </ul>
+      {% endif %}
+    {% endpaginate %}
+  </div>
+  <div class="hair-talk-sidebar">
+    {% if settings.blog_ad1 %}<div class="ad"><a href="{{ settings.blog_ad1_link }}"><img src="{{ settings.blog_ad1 | img_url: '700x' }}" /></a></div>{% endif %}
+    <div class="social">
+      Talk to us!
+      <ul>{{ settings.footer_soc_but }}</ul>
+    </div>
+    <div class="hair-talk-popular-posts-header">
+      <hr />
+      <h3>Popular Posts</h3>
+    </div>
+    {% assign counter = 0 %}
+    {% assign ad_placed = false %}
+    {% for article in blog.articles %}
+      {% if article.tags contains 'Popular' and counter < 5 %}
+    	{% unless articles_used contains article.title %}
+        <a href="{{ article.url }}" class="popular-post">
+          <img src="{{ article.image.src | img_url: '700x' }}" alt="{{ article.image.alt }}" />
+          <span class="post-title">{{ article.title }}</span>
+        </a>
+        {% assign counter = counter | plus: 1 %}
+    	{% endunless %}
+      {% endif %}
+      {% if ad_placed == false and counter == 3 %}
+    {% if settings.blog_ad2 %}<div class="ad"><a href="{{ settings.blog_ad2_link }}"><img src="{{ settings.blog_ad2 | img_url: '700x' }}" /></a></div>{% endif %}
+    	{% assign ad_placed = true %}
+      {% endif %}
+    {% endfor %}
+    {% if ad_placed == false %}
+    {% if settings.blog_ad2 %}<div class="ad"><a href="{{ settings.blog_ad2_link }}"><img src="{{ settings.blog_ad2 | img_url: '700x' }}" /></a></div>{% endif %}
+    {% endif %}
+  </div>
+</div>

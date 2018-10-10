@@ -1,0 +1,45 @@
+<!-- modalAddToCart -->
+<div class="modal fade" id="modalAddToCart" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog white-modal modal-sm">
+    <div class="modal-content ">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="icon icon-clear"></span></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center">
+          <span class="productmsg">Product</span>{{ "products.popup_product.added" | t }}
+        </div>
+      </div>
+      <div class="modal-footer text-center">		       	
+        <a href="#" onclick="ibLocalStore.coupon = ''; window.location = (Shopify.couponCode) ? '/checkout?discount=' + Shopify.couponCode : '/checkout'" class="btn btn--ys btn--full btn--lg">{{ "products.popup_product.button" | t }}</a>
+        <button type="button" class="btn btn--ys btn--full btn--lg" style="margin-left:0;" data-dismiss="modal" aria-hidden="true">Continue Shopping</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /modalAddToCart -->
+<!-- modalAddToCart Error -->
+<div class="modal fade" id="modalAddToCartError" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog white-modal modal-sm">
+    <div class="modal-content ">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="icon icon-clear"></span></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center error_message">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  jQuery("a:contains('checkout')").click(function(e) {
+    //e.stopPropagation();
+    fbCustomCheckout('modal');
+    jQuery(this).unbind(e);
+  });
+  jQuery("button:contains('Continue Shopping')").click(function(e) {
+    //e.stopPropagation();
+    fbCustomContinue('modal');
+  });
+</script>

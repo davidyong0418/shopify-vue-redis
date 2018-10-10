@@ -1,0 +1,40 @@
+{% include 'shogun-products', content: article %}
+{% assign ignore_article = article.title %}
+{% include 'blog-header' %}
+<div class="container blog">
+  <div class="hair-talk-article-post">
+    <img src="{{ article.image.src | img_url: '700x' }}" />
+    {{ article.content }}
+  </div>
+  <div class="hair-talk-sidebar">
+    {% if settings.blog_ad1 %}<div class="ad"><a href="{{ settings.blog_ad1_link }}"><img src="{{ settings.blog_ad1 | img_url: '700x' }}" /></a></div>{% endif %}
+    <div class="social">
+      Talk to us!
+      <ul>{{ settings.footer_soc_but }}</ul>
+    </div>
+    <div class="hair-talk-popular-posts-header">
+      <hr />
+      <h3>Popular Posts</h3>
+    </div>
+    {% assign counter = 0 %}
+    {% assign ad_placed = false %}
+    {% for article in blog.articles %}
+      {% if article.tags contains 'Popular' and counter < 5 %}
+    	{% unless ignore_article contains article.title %}
+        <a href="{{ article.url }}" class="popular-post">
+          <img src="{{ article.image.src | img_url: '700x' }}" alt="{{ article.image.alt }}" />
+          <span class="post-title">{{ article.title }}</span>
+        </a>
+        {% assign counter = counter | plus: 1 %}
+    	{% endunless %}
+      {% endif %}
+      {% if ad_placed == false and counter == 3 %}
+    {% if settings.blog_ad2 %}<div class="ad"><a href="{{ settings.blog_ad2_link }}"><img src="{{ settings.blog_ad2 | img_url: '700x' }}" /></a></div>{% endif %}
+    	{% assign ad_placed = true %}
+      {% endif %}
+    {% endfor %}
+    {% if ad_placed == false %}
+    {% if settings.blog_ad2 %}<div class="ad"><a href="{{ settings.blog_ad2_link }}"><img src="{{ settings.blog_ad2 | img_url: '700x' }}" /></a></div>{% endif %}
+    {% endif %}
+  </div>
+</div>

@@ -1,0 +1,309 @@
+{% assign array_key = "|$big_array$|" | downcase %}
+{% assign menu_data = settings.submenu_type_and_list_1 | downcase | handle %}
+{% assign value = settings.submenu_type_and_list_2 | downcase | handle %}
+{% assign menu_data = menu_data | append: array_key | append: value %}
+{% assign value = settings.submenu_type_and_list_3 | downcase | handle %}
+{% assign menu_data = menu_data | append: array_key | append: value %}
+{% assign value = settings.submenu_type_and_list_4 | downcase | handle %}
+{% assign menu_data = menu_data | append: array_key | append: value %}
+{% assign value = settings.submenu_type_and_list_5 | downcase | handle %}
+{% assign menu_data = menu_data | append: array_key | append: value %}
+
+{% assign sub_type3 = settings.submenu_type3 | downcase %}
+
+{% if settings.menu_icon_hot != '' %}{% assign hotArray = settings.menu_icon_hot | split: ',' %}{% assign newa = '' %}{% for a in hotArray %}{% assign a1 = a | strip | downcase %}{% assign newa = newa | append: '__' | append: a1 | append: ',' %}{% endfor %}{% assign hotArray = newa %}{% else %}{% assign hotArray = '' %}{% endif %}
+{% if settings.menu_icon_new != '' %}{% assign newArray = settings.menu_icon_new | split: ',' %}{% assign newa = '' %}{% for a in newArray %}{% assign a1 = a | strip | downcase %}{% assign newa = newa | append: '__' | append: a1 | append: ',' %}{% endfor %}{% assign newArray = newa %}{% else %}{% assign newArray = '' %}{% endif %}
+
+<nav role="navigation">
+ <div class="header-left">
+  <ul>
+    
+    {% assign menu_iteration = 0 %}
+    {% assign submenu_count = 0 %}
+    {% assign menu_count = linklists[settings.main_menu_selected].links | size %}
+    {% assign menu_left_end = menu_count | divided_by:2 | ceil %}
+    {% for link in linklists[settings.main_menu_selected].links %}
+
+      {% assign menu_iteration = menu_iteration | plus:1 %}
+      {% assign menu_tabindex = menu_iteration | plus:{{submenu_count}} %}
+      {% assign submenu_type = "" %}
+      {% assign page_handle = "" %}
+
+      {% capture return %}{% include "get_linklist_dropdown", customlink: link %}{% endcapture %}
+      {% assign return = return | split: "%%" %}
+      {% assign has_drop_down = return | first | strip %}
+      {% assign child_list_handle = return | last | strip %}
+
+      {% comment %} Check submenu type {% endcomment %}
+      {% assign title = child_list_handle %}
+      {% if menu_data contains title %}
+          {% assign current_menu_data = menu_data | split: array_key %}
+          {% for data in current_menu_data %}
+              {% if data == title %}
+                  {% assign current_menu_data = title %}
+                  {% assign submenu_type = "type2" %}
+                  {% assign count_type2 = forloop.index %}
+                  {% break %}
+              {% endif %}
+          {% endfor %}
+      {% else %}
+          {% assign check = 'item' | append: forloop.index %}
+          {% capture cur_item %}{% if sub_type3 contains check %}{{ check }}{% else %}{{ link.title | downcase }}{% endif %}{% endcapture %}
+          {% if sub_type3 contains cur_item %}
+              {% assign current_menu_data = sub_type3 | split: ";" %}
+              {% for data in current_menu_data %}
+                  {% if data contains cur_item %}
+                      {% assign temp = data | split: ',' %}
+                      {% assign page_handle = temp[1] | strip %}
+                      {% assign temp = temp[0] | strip %}
+                      {% if temp == cur_item %}
+                          {% assign submenu_type = "type3" %}
+                          {% break %}
+                      {% endif %}
+                  {% endif %}
+              {% endfor %}
+          {% endif %}
+      {% endif %}
+
+      {% comment %} Check selected mein menu item {% endcomment %}
+        {% assign select_item = false %}
+        {% if link.active %}
+          {% assign select_item = true %}
+        {% endif %}
+
+        {% unless select_item %}
+              {% assign level_2 = linklists[link.handle] %}
+              {% unless level_2.empty? %}
+                  {% for child_level_2 in level_2.links %}
+                      {% if child_level_2.active or select_item %}
+                          {% assign select_item = true %}
+                          {% break %}
+                      {% else %}
+                          {% assign level_3 = linklists[child_level_2.handle] %}
+                          {% unless level_3.empty? %}
+                              {% for child_level_3 in level_3.links %}
+                                  {% if child_level_3.active %}
+                                      {% assign select_item = true %}
+                                      {% break %}
+                                  {% endif %}
+                              {% endfor %}
+                          {% endunless %}
+                      {% endif %}
+                  {% endfor %}
+              {% endunless %}
+        {% endunless %}
+
+
+      {% comment %} Main Menu {% endcomment %}
+      {% assign level_2 = linklists[child_list_handle] %}
+      
+      {% assign link_url_class = link.title | handleize %}
+
+
+    {% if submenu_type != "type2" and submenu_type != "type3" %}
+      {% unless level_2.empty? %}
+      {% endunless %}
+    {% endif %}
+    <li class="dropdown dropdown-mega-menu header-link-{{link_url_class}}{% if submenu_type != "type2" and submenu_type != "type3" %} no-megamenu-js{% if level_2.links[0].handle contains "two_column" or level_2.links[0].handle contains "three_column" %} dropdown-two-col{% else %} dropdown-one-col{% endif %}{% endif %}">
+      <a tabindex="{{menu_tabindex}}" href="{% if level_2.empty? %}{{ link.url }}{% else %}#{% endif %}" class="{% unless level_2.empty? %}ib-shop-menu-dropdown-toggle{% endunless %}" {% if link.title contains 'sale' %}style="color:red;" {% endif %}{% unless level_2.empty? %} aria-label="{{link.title}} Menu"{% endunless %}>
+        {% assign check_title = link.title | strip | downcase %}
+        {% assign check_title = '__' | append: check_title %}
+        {% if newArray contains check_title %}<span class="badge badge--menu">{{ "general.menu_icons.new" | t }}</span>{% endif %}
+        {% if hotArray contains check_title %}<span class="badge badge--menu badge--color">{{ "general.menu_icons.sale" | t }}</span>{% endif %}
+        {{ link.title }}
+        {% unless level_2.empty? %}
+        <i class="fa fa-angle-down"></i>
+        {% endunless %}
+      </a>
+      {% unless level_2.empty? %}
+      	{% assign level_2 = linklists[child_list_handle] %}
+      	{% capture start %}{% if level_2.links[0].handle contains "two_column" or level_2.links[0].handle contains "three_column" %}1{% else %}0{% endif %}{% endcapture %}
+      	{% for child_level_2 in level_2.links offset: start %}
+      		{% assign submenu_count = submenu_count | plus:1 %}
+            {% for child_level_3 in linklists[child_level_2.handle].links offset: start %}
+              {% assign submenu_count = submenu_count | plus:1 %}
+      		{% endfor %}
+      	{% endfor %}
+      {% endunless %}
+      {% if submenu_type == "type2" %}{% unless level_2.empty? %}{% if has_drop_down == "true" %}
+      <ul class="dropdown-menu megamenu" role="menu">
+        {% assign imgs_key = "submenu_images_" | append: count_type2 %}
+        {% assign imgs = settings[imgs_key] %}
+        {% if imgs != "" %}{% assign imgs = imgs | split: ',' %}{% endif %}
+
+        {% assign grid = "submenu_type_and_list_grid_" | append: count_type2 %}
+        {% assign grid = settings[grid] %}
+
+        {% for child_level_2 in level_2.links %}
+        <li class="col-sm-{{ grid }}">
+          <a href="{{ child_level_2.url | downcase }}" class="megamenu__subtitle">
+            <span>{{ child_level_2.title }}</span>
+            {% if imgs != "" %}{% if imgs[forloop.index0] != "" %}
+            <span class="megamenu__category-image hidden-xs"><img class="img-responsive" src="{{ imgs[forloop.index0] | strip }}" alt=""/></span>
+            {% endif %}{% endif %}
+          </a>
+
+          {% capture return %}{% include "get_linklist_dropdown", link: child_level_2 %}{% endcapture %}
+          {% assign return = return | split: "%%" %}
+          {% assign has_drop_down2 = return | first | strip %}
+          {% assign child_list_handle2 = return | last | strip %}
+
+          {% if has_drop_down2 == "true" %}
+            {% assign level_3 = linklists[child_list_handle2] %}
+            {% unless level_3.empty? %}
+            <ul class="megamenu__submenu">
+              {% for child_level_3 in level_3.links %}
+              <li class="level2"><a href="{{ child_level_3.url | downcase }}">{{ child_level_3.title }}</a>
+
+                {% capture return %}{% include "get_linklist_dropdown", link: child_level_3 %}{% endcapture %}
+                {% assign return = return | split: "%%" %}
+                {% assign has_drop_down3 = return | first | strip %}
+                {% assign child_list_handle3 = return | last | strip %}
+
+                {% if has_drop_down3 == "true" %}
+                  {% assign level_4 = linklists[child_list_handle3] %}
+                  {% unless level_4.empty? %}
+                  <ul class="megamenu__submenu">
+                    {% for child_level_4 in level_4.links %}
+                    <li class="level3"><a href="{{ child_level_4.url | downcase }}">{{ child_level_4.title }}</a>
+
+                      {% capture return %}{% include "get_linklist_dropdown", link: child_level_4 %}{% endcapture %}
+                      {% assign return = return | split: "%%" %}
+                      {% assign has_drop_down4 = return | first | strip %}
+                      {% assign child_list_handle4 = return | last | strip %}
+
+                      {% if has_drop_down4 == "true" %}
+                        {% assign level_5 = linklists[child_list_handle4] %}
+                        {% unless level_5.empty? %}
+                        <ul class="megamenu__submenu">
+                          {% for child_level_5 in level_5.links %}
+                          <li class="level4"><a href="{{ child_level_5.url | downcase }}">{{ child_level_5.title }}</a></li>
+                          {% endfor %}
+                        </ul>
+                        {% endunless %}
+                      {% endif %}
+                    </li>
+                    {% endfor %}
+                  </ul>
+                  {% endunless %}
+                {% endif %}
+              </li>
+              {% endfor %}
+            </ul>
+            {% endunless %}
+          {% endif %}
+        </li>
+        {% endfor %}
+
+        {% assign key = "submenu_showcollection_" | append: count_type2 %}
+        {% if settings[key] %}
+          {% assign key = "submenu_collectiontitle_" | append: count_type2 %}
+          {% assign titleLink = "submenu_collectiontitlelink_" | append: count_type2 %}
+          <li class="col-sm-{{ grid }} hidden-xs">
+            <a href="{{ settings[titleLink] }}" class="megamenu__subtitle"><span>{{ settings[key] }}</span></a>
+
+            {% assign key = "submenu_collection_" | append: count_type2 %}
+            {% assign key = settings[key] %}
+            {% if key == blank %}{% assign key = "all" %}{% endif %}
+            {% assign selected_collection = collections[key].products %}
+            {% assign key = "submenu_collectionlength_" | append: count_type2 %}
+            {% assign _lenght = settings[key] | plus: 0 %}
+
+            <div class="carousel-products megaMenuCarousel_js">
+              {% for product in selected_collection limit: _lenght %}
+              <div>
+                <!-- product -->
+                <div class="product">
+                  <div class="product__inside">
+                    <!-- product image -->
+                    <div class="product__inside__image">
+                      <a href="{{ product.url | within: collection }}"> <img src="{{ product.featured_image | product_img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}"> </a>
+                    </div>
+                    <!-- /product image --> 
+                    <!-- product name -->
+                    <div class="product__inside__name">
+                      <h2><a href="{{ product.url | within: collection }}">{{ product.title }}</a></h2>
+                    </div>
+                    <!-- /product name --> 
+                    <!-- product price -->
+                    <div class="product__inside__price price-box">{{ product.selected_or_first_available_variant.price | money }}</div>
+                    <!-- /product price --> 
+                  </div>
+                </div>
+                <!-- /product -->
+              </div>
+              {% endfor %}
+            </div>
+            <!-- /carousel -->
+
+          </li>
+        {% endif %}
+
+        {% assign key = 'submenu_customhtml_' | append: count_type2 %}{% if settings[key] != "" %}<li class="col-sm-12 hidden-xs">{{ settings[key] }}</li>{% endif %}
+
+      </ul>
+      {% endif %}{% endunless %}{% endif %}
+
+      {% if submenu_type == "type3" %}
+        <ul class="dropdown-menu megamenu image-links-layout" role="menu">
+          {% include "get-page-content" name: page_handle access: "true" %}
+        </ul>
+      {% endif %}
+
+    </li>
+      {% if menu_iteration == menu_left_end %}
+    	{% assign menu_iteration = menu_iteration | plus:1 %}
+    	{% assign menu_tabindex = menu_iteration | plus:{{submenu_count}} %}
+    </ul>
+  </div>
+  <div class="header-middle">
+    <div class="header-middle-logo">
+      <div class="header-middle-logo-wrapper">
+        <img src="{{ 'lange-emblem.png' | asset_url  }}" alt="L'ange Hair Emblem" class="header-middle-emblem-back" />
+        <img src="{{ 'lange-emblem-black.png' | asset_url  }}" alt="L'ange Hair Emblem" class="header-middle-emblem-front" />
+        <img src="{{ 'lange-title.png' | asset_url  }}" alt="L'ange" class="header-middle-title" />
+        <a href="/" aria-label="L'ange Hair Home" tabindex="{{menu_tabindex}}"></a>
+      </div>
+    </div>
+  </div>
+  <div class="header-right">
+   <ul>
+      {% endif %}
+    {% endfor %}
+   </ul>
+  </div>
+  <script>
+  ;(function () {
+    var dropdownLinks = document.querySelectorAll('.ib-shop-menu-dropdown-toggle');
+    dropdownLinks.forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        var submenuId = 'ib-shop-menu__' + link.innerText.trim().toLowerCase();
+        var submenuEl = document.getElementById(submenuId);
+        if (submenuEl.style.display=="none") {
+          submenuEl.style.display = "block";
+          window.setTimeout(function(){
+            submenuEl.classList.toggle('show-submenu');},100);
+        } else {
+          submenuEl.classList.toggle('show-submenu');
+          window.setTimeout(function(){
+            submenuEl.style.display = "none";},300);
+        }
+        return false;
+      }, false);
+    });
+    try {
+      document.querySelectorAll('#header nav ul li').forEach(function (x) {
+        var menuLinkTitle = x.querySelector('a').innerText;
+        if (menuLinkTitle === '$1,000 GIVEAWAY') {
+          x.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.getElementById('manychat-button').click();
+            return false;
+          }, false);
+        }
+      });
+    } catch (e) { console.log(e); }
+  }());
+  </script>
+</nav>

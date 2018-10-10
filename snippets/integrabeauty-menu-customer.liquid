@@ -1,0 +1,39 @@
+{% assign menu_iteration = menu_iteration | plus:1 %}
+{% assign menu_tabindex = menu_iteration | plus:{{submenu_count}} %}
+<!-- account menu start -->
+<div class="account link-inline {{ customer_class }}">
+  <div class="dropdown text-right">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-label="User Account Menu" tabindex="{{menu_tabindex}}">
+      <span class="icon icon-user ">&nbsp;</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu--xs-full">
+      {% if shop.customer_accounts_enabled %}
+      	{% assign menu_iteration = menu_iteration | plus:1 %}
+      	{% assign menu_tabindex = menu_iteration | plus:{{submenu_count}} %}	
+      	<li><a href="/account" tabindex="{{menu_tabindex}}"><span class="icon icon-person"></span>{{ "layout.customer.account" | t }}</a></li>
+      {% endif %}
+      {% assign menu_iteration = menu_iteration | plus:1 %}
+      {% assign menu_tabindex = menu_iteration | plus:{{submenu_count}} %}
+      <li><a href="/checkout" tabindex="{{menu_tabindex}}"><span class="icon icon-done_all"></span>{{ "layout.customer.checkout" | t }}</a></li>
+
+      {% if shop.customer_accounts_enabled %}
+      {% if customer %}
+      	{% assign menu_iteration = menu_iteration | plus:1 %}
+      	{% assign menu_tabindex = menu_iteration | plus:{{submenu_count}} %}
+      	<li><a href="/account/logout" tabindex="{{menu_tabindex}}"><span class="icon icon-lock"></span>{{ "layout.customer.log_out" | t }}</a></li>
+      {% else %}
+      	{% assign menu_iteration = menu_iteration | plus:1 %}
+      	{% assign menu_tabindex = menu_iteration | plus:{{submenu_count}} %}
+      	<li><a href="/account/login" tabindex="{{menu_tabindex}}"><span class="icon icon-lock"></span>{{ "layout.customer.sign_in" | t }}</a></li>
+      {% if shop.customer_accounts_optional %}
+      	{% assign menu_iteration = menu_iteration | plus:1 %}
+      	{% assign menu_tabindex = menu_iteration | plus:{{submenu_count}} %}
+      	<li><a href="/account/register" tabindex="{{menu_tabindex}}"><span class="icon icon-person_add"></span>{{ "layout.customer.register" | t }}</a></li>{% endif %}
+      {% endif %}
+      {% endif %}
+
+      <li class="dropdown-menu__close" tabindex="{{menu_tabindex}}"><a href="#" tabindex="-1"><span class="icon icon-close"></span>{{ 'general.menu.button_close' | t }}</a></li>
+    </ul>
+  </div>
+</div>
+<!-- account menu end -->

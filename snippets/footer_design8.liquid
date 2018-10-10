@@ -1,0 +1,104 @@
+<!-- FOOTER section -->
+<footer class="layout-1 integrabeauty-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+        <div class="integrabeauty-footer__dictionary">
+          <div><span class="word">L'ANGE</span> <span class="pronunciation">/lah-nj/</span> <span class="word-type">noun</span></div>
+          <div><span class="definition">The French word for “Angel.” An angel has qualities of Beauty, Purity and Kindness.</span></div>
+          <ul>
+            <li>Become a hair goddess with L'ange.</li>
+            <li>Holy L'ange, my hair looks amazing!</li>
+            <li>Heavenly hair starts with L'ange!</li>
+          </ul>
+        </div>
+        <div class="title">Stay Connected</div>
+        <div class="integrabeauty-footer__newsletter">
+          <script>
+          jQuery(document).ready(function () {
+            function validateFields (name, email) {
+              var nameRegex = /^[a-zA-Z ]{2,30}$/;
+              var emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+              if (nameRegex.test(name) && emailRegex.test(email)) {
+                return true;
+              }
+              return false;
+            }
+            jQuery('#btnSubscribe').click(function (event) {
+              event.preventDefault();
+              var requestData = {
+                email: jQuery('#subscribeEmail').val(),
+                first_name: jQuery('#subscribeFirstName').val()
+              };
+              var resultElement = jQuery('#subscribeResponse');
+              if (!validateFields(requestData.first_name, requestData.email)) {
+                resultElement.html('Please provide a valid name and email.');
+                return;
+              }
+              jQuery.ajax({
+                url: 'https://smpilhzrlc.execute-api.us-east-1.amazonaws.com/prod/v1/mailinglist',
+                method: 'POST',
+                data: JSON.stringify(requestData),
+                dataType: 'json',
+                'Content-Type': 'application/json',
+                crossDomain: true,
+                success: function () {
+                  document.querySelector('.integrabeauty-footer__newsletter form').reset();
+                  resultElement.html('Thank you! You have been successfully subscribed!');
+                }
+              });
+            });
+          });
+          </script>
+          <a name="subscribe"></a>
+          <form name="subscribe" _lpchecked="1">
+            <input type="text" required="" placeholder="First Name" id="subscribeFirstName" name="subscribeFirstName" aria-label="First Name">
+            <input type="email" required="" placeholder="E-Mail Address" id="subscribeEmail" name="subscribeEmail" aria-label="E-Mail Address">
+            <input type="submit" value="SUBSCRIBE" id="btnSubscribe">
+          </form>
+          <div id="subscribeResponse" style="color:#90754a;margin-top:12px;font-size:14px;"></div>
+          <p>Enter your email address to join the L'ange Newsletter</p>
+        </div>
+        {% if settings.show_footer_soc_but %}
+        <div class="integrabeauty-footer__social-icons">
+          <ul>{{ settings.footer_soc_but }}</ul> 
+        </div>
+        {% endif %}
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+        <div class="integrabeauty-footer__links container">
+          <div class="row">
+            <div class="integrabeauty-footer__links-group col-xs-12 col-sm-4 col-md-2 col-lg-2 col-xl-2">
+              <h4>GENERAL INFO</h4>
+              <ul>
+
+                <li><a href="https://langehair.com/pages/brand-ambassadors">Brand Ambassador Program</a></li>
+				{% if customer %}
+                <li><a href="https://langehair.com/account/logout">Log Out</a></li>
+                {% endif %}
+                <li><a href="https://langehair.com/22041955/policies/35392651.html/">Privacy Policy</a></li>
+
+                <li><a href="https://langehair.com/22041955/policies/35392715.html">Terms Of Service</a></li>
+
+              </ul>
+            </div>
+            {% include "integrabeauty-footer-column-links" %}
+          </div>
+          <div class="row">
+            <div id="y-badges" class="yotpo yotpo-badge badge-init">&nbsp;</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <!-- footer-copyright -->
+  <div class="container footer-copyright">
+    <div class="row">{{ settings.footer_address }}</div>
+  </div>
+  <!-- /footer-copyright --> 
+  <a href="#" class="btn btn--ys btn--full visible-xs" id="backToTop">Back to top <span class="icon icon-expand_less"></span></a> 
+
+</footer>
+<!-- END FOOTER section -->

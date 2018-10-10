@@ -1,0 +1,30 @@
+.shg-box.benefits-left,
+.shogun-region .shogun-component.shg-box.benefits-left{
+    position: absolute;
+    width: 400%;
+    height: 100%;
+    right: 100%;
+}
+.fit-img img { width:100%; }
+.shg-c.shg-product[data-is-product-box="true"] {
+    display: block !important;
+}
+.shg-box.shg-z1 > .shg-box-content {
+    z-index: 1;
+}
+body:not(.OB_show) .OB_show { display:none }
+body:not(.OB_show) .dropzone-wrapper .OB_show {
+    display: initial;
+}
+body:not(.OB_show) .dropzone-wrapper .OB_show::after {
+    content: '(Outbrain only)';
+    position:absolute;
+    left:-10px;
+    bottom:-10px;
+    display:inline-block;
+    background:#FFF;
+    z-index:10000;
+    opacity:.75;
+  	padding: 0 5px;
+}
+#c9-button { display:none; }

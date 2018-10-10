@@ -1,0 +1,58 @@
+  /* Fonts */
+  @font-face {
+    font-family: 'Abuget';
+    src: url(' {{ 'Abuget.ttf' | asset_url }} ') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Playfair';
+    src: url(' {{ 'PlayfairDisplay-Regular.ttf' | asset_url }} ') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Oswald';
+    src: url(' {{ 'Oswald-Regular.ttf' | asset_url }} ') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Lato';
+    src: url(' {{ 'Lato-Regular.ttf' | asset_url }} ') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {} 
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {} 
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {} 
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {} 
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {}
+
+
+/* Mobile */
+.tab {
+  background-color: transparent;
+  border: none;
+  color: #000;
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.889em;
+  font-weight: 100;
+  padding-bottom: 2px;
+  padding-top: 2px;
+  text-transform: uppercase;
+}

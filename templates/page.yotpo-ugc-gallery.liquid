@@ -1,0 +1,556 @@
+{% include 'shogun-products', content: page %}
+<div class="container">
+  {{ page.content }}
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+{% raw %}
+<div id="ib-yotpo-ugc-gallery" class="yotpo-size-6 yotpo-real-results yotpo-hidden">
+  	
+  <div class="yotpo-pictures-gallery-wrapper yotpo-hover-enable">
+   <div class="yotpo-pictures-gallery-images-wrapper">
+     <div v-for="(image,index) in images" class="yotpo-single-image-container" v-on:click="openPopup(image,index)">
+       
+       <div v-if="image.source === 'instagram'" class="y-image-wrapper">
+         <img class="yotpo-image" v-bind:data-image-id="image.external_media_id" v-bind:src="image.low_resolution_image_url"
+             v-bind:alt="image.post.content">
+         <div class="y-image-overlay" v-bind:data-image-id="image.image_id" v-bind:data-external-image-id="image.external_media_id"
+             v-bind:data-original-src="image.original_image_url"
+             data-source="instagram"> </div>
+         <span class="yotpo-stars yotpo-hover-icon">
+           <span class="yotpo-icon yotpo-icon-insta"></span>
+           <div class="real-results-content">
+             <b>{{ image.post.username }}</b>
+             <br> {{ image.post.content }}
+           </div>
+         </span>
+       </div>
+       
+       <div v-if="image.source === 'review'" class="y-image-wrapper">
+          <img class="yotpo-image" v-bind:data-image-id="image.image_id" v-bind:src="image.low_resolution_image_url"
+              v-bind:alt="image.review.content">
+          <div class="y-image-overlay" v-bind:data-image-id="image.image_id" v-bind:data-original-src="image.original_image_url"
+              data-source="review"> </div>
+          <span class="yotpo-stars yotpo-hover-icon">
+              <span class="yotpo-icon yotpo-icon-star pull-left"></span>
+              <span class="yotpo-icon yotpo-icon-star pull-left"></span>
+              <span class="yotpo-icon yotpo-icon-star pull-left"></span>
+              <span class="yotpo-icon yotpo-icon-star pull-left"></span>
+              <span class="yotpo-icon yotpo-icon-star pull-left"></span>
+              <div class="real-results-content">
+                  <b>{{ image.review.user.display_name }}</b>
+                  <br>{{ image.review.content }}</div>
+          </span>
+      </div>
+     
+     </div>
+   </div>
+   
+    
+ 
+
+
+    <div class="yotpo yotpo-lightbox-wrapper">
+      <div class="yotpo-lightbox-contents yotpo-hidden">
+        <template v-for="(image,index) in images">
+          <div v-if="image.source === 'instagram'" v-bind:class="'yotpo-slider-content-'+image.image_id" data-source="instagram">
+            <div v-bind:class="'yotpo-gallery-' + (100+index) + ' yotpo-lightbox-products-container'">
+              <div v-if="image.tagged_products.length > 0" class="yotpo-lightbox-products-main">
+                <template v-for="(tagged,imgID) in image.tagged_products">
+                  <div v-if="imgID == 0" class="yotpo-lightbox-product" v-bind:data-product-id="tagged.id">
+                    <div class="yotpo-lightbox-product" v-bind:data-product-id="tagged.id">
+                      <a v-bind:href="tagged.product_link" target="_blank">
+                        <img class="yotpo-lightbox-product-main-image" v-bind:src="tagged.image_url">
+                      </a>
+                      <a v-bind:href="tagged.product_link" target="_blank">
+                        <label class="yotpo-lightbox-product-name">{{ tagged.name }}</label>
+                      </a>
+                      <a v-bind:href="tagged.product_link" target="_blank">
+                        <button class="yotpo-lightbox-product-button">Shop Now</button>
+                      </a>
+                  	</div>
+                  </div>
+                  <div v-if="imgID > 0" class="yotpo-lightbox-product yotpo-hidden" v-bind:data-product-id="tagged.id">
+                    <div class="yotpo-lightbox-product" v-bind:data-product-id="tagged.id">
+                      <a v-bind:href="tagged.product_link" target="_blank">
+                        <img class="yotpo-lightbox-product-main-image" v-bind:src="tagged.image_url">
+                      </a>
+                      <a v-bind:href="tagged.product_link" target="_blank">
+                        <label class="yotpo-lightbox-product-name">{{ tagged.name }}</label>
+                      </a>
+                      <a v-bind:href="tagged.product_link" target="_blank">
+                        <button class="yotpo-lightbox-product-button">Shop Now</button>
+                      </a>
+                  	</div>
+                  </div>
+                </template>
+              </div>
+              <div v-if="image.tagged_products.length > 1" class="yotpo-lightbox-products-footer"> 
+                <label>Other tagged products:</label>
+                <div class="yotpo-lightbox-products-select">
+                  <template v-for="(tagged,imgID) in image.tagged_products">
+                    <img v-if="imgID == 0" class="yotpo-lightbox-product-select-image yotpo-lightbox-product-selected" v-bind:data-product-id="tagged.id" v-bind:src="tagged.image_url">
+                    <img v-if="imgID > 0" class="yotpo-lightbox-product-select-image " v-bind:data-product-id="tagged.id" v-bind:src="tagged.image_url">
+                  </template>
+                </div>
+              </div>
+            </div>
+            <div class="yotpo-instagram" v-bind:data-instagram-id="image.image_id">
+              <div class="yotpo-header">
+                <span class="yotpo-header-element">
+                  <img class="instagram-profile-picture" v-bind:src="image.image_url"> </span>
+                <div class="yotpo-header-element">
+                  <label class="yotpo-user-name pull-left yotpo-instagram-username"> {{ image.post.username }} </label>
+                  <br>
+                  <label class="yotpo-instagram-location"> </label>
+                </div>
+                <div class="yotpo-header-element yotpo-header-actions">
+                  <label class="y-label yotpo-review-date"> {{ image.post.created_time | formatDate }} </label>
+                </div>
+              </div>
+              <div class="yopto-main yotpo-regular-box"> {{ image.post.content }}
+              </div>
+              <div class="yotpo-footer">
+                <div class="yotpo-helpful yotpo-hidden">
+                  <label class="y-label label-helpful">Was this review helpful?</label>
+                  <div class="yotpo-icon-btn-small transparent-color-btn vote-btn" data-type="up">
+                    <span class="yotpo-icon yotpo-icon-thumbs-up"></span>
+                  </div>
+                  <label class="y-label yotpo-sum vote-sum" data-type="up">{{ image.post.votes_up }}</label>
+                  <div class="yotpo-icon-btn-small transparent-color-btn vote-btn" data-type="down">
+                    <span class="yotpo-icon yotpo-icon-thumbs-down"></span>
+                  </div>
+                  <label class="y-label yotpo-sum vote-sum" data-type="down">{{ image.post.votes_down }}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+          <div v-if="image.source === 'review'" v-bind:class="'yotpo-slider-content-'+image.image_id" data-source="review">
+            <div v-bind:class="'yotpo-gallery-' + (100+index) + ' yotpo-lightbox-products-container'">
+              <div class="yotpo-lightbox-products-main">
+                <div class="yotpo-lightbox-product " v-bind:data-product-id="image.product.id">
+                  <a v-bind:href="image.product.product_link" target="_blank">
+                    <img class="yotpo-lightbox-product-main-image" v-bind:src="image.product.image_url">
+                  </a>
+                  <a v-bind:href="image.product.product_link" target="_blank">
+                    <label class="yotpo-lightbox-product-name">{{ image.product.name }}</label>
+                  </a>
+                  <a v-bind:href="image.product.product_link" target="_blank">
+                    <button class="yotpo-lightbox-product-button">Shop Now</button>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="yotpo-review yotpo-regular-box " v-bind:data-review-id="image.review_id">
+              <div class="yotpo-header yotpo-verified-buyer ">
+                <span class="yotpo-icon-profile yotpo-header-element pull-left">
+                  <label class="yotpo-user-letter">{{ image.review.user.display_name | firstChar }}</label>
+                  <span class="yotpo-icon yotpo-icon-circle-checkmark yotpo-action-hover" data-type="toggleFade" data-target="yotpo-tool-tip"
+                        data-target-container="yotpo-header"></span>
+                </span>
+                <div class="yotpo-header-element ">
+                  <label class="y-label yotpo-user-name yotpo-font-bold pull-left">{{ image.review.user.display_name }}</label>
+                  <div v-if="image.review.verified_buyer === 1" class="label-with-tooltip pull-left">
+                    <span class="y-label yotpo-user-title yotpo-action-hover" data-type="toggleFade" data-target="yotpo-tool-tip">Verified Buyer</span>
+                    <div class="yotpo-tool-tip yotpo-animation-fade" data-user-type="yotpo-verified-buyer">
+                      <div class="tool-tip-header">
+                        <span>What is a</span>
+                        <span>Verified Buyer</span>
+                      </div>
+                      <div class="tool-tip-content"> A Verified Buyer is a user who has purchased the reviewed product through our store. </div>
+                    </div>
+                  </div>
+                  <div class="yotpo-clr"></div>
+                  <span class="yotpo-review-stars ">
+                    <span class="yotpo-icon yotpo-icon-star pull-left"></span>
+                    <span class="yotpo-icon yotpo-icon-star pull-left"></span>
+                    <span class="yotpo-icon yotpo-icon-star pull-left"></span>
+                    <span class="yotpo-icon yotpo-icon-star pull-left"></span>
+                    <span class="yotpo-icon yotpo-icon-star pull-left"></span>
+                  </span>
+                  <div class="yotpo-clr"></div>
+                </div>
+                <div class="yotpo-header-element yotpo-header-actions ">
+                  <label class="y-label yotpo-review-date">{{ image.review.created_at | formatDate }}</label>
+                </div>
+              </div>
+              <div class="yotpo-main ">
+                <div class="content-title yotpo-font-bold"> {{ image.review.title }} </div>
+                <div class="yotpo-clr"></div>
+                <div class="yotpo-review-wrapper">
+                  <div class="content-review"> {{ image.review.content }}
+                  </div>
+                </div>
+                <a class="product-link-wrapper " v-bind:href="image.product.product_link" target="_blank" rel="nofollow">
+                  <div v-bind:data-product-id="image.product.id" class="y-label product-link"> On {{ image.product.name }} </div>
+                </a>
+              </div>
+              <div class="yotpo-footer yotpo-hidden">
+                <div class="footer-actions">
+                  <span class="yotpo-action" data-type="toggleFade" data-target="share-review">
+                    <span class="yotpo-icon yotpo-icon-share"></span>
+                    <label class="y-label">share</label>
+                    <span class="yotpo-icon yotpo-icon-seperator"></span>
+                  </span>
+                  <span class="share-options-wrapper">
+                    <span class="share-options share-review">
+                      <span data-social="facebook">
+                        <label class="y-label yotpo-action">
+                          <a class="social-link popup-link" data-network="facebook" href="https://www.facebook.com/dialog/feed?app_id=226132034107547&amp;display=popup&amp;link=http%3A%2F%2Freviews.me%2Ffacebook_post%3Fimage_url%3Dhttps%253A%252F%252Fddcfq0gxiontw.cloudfront.net%252FProduct%252F34991107%252F28600778%252Fsquare.jpg%253F1526464572%26product_url%3Dhttps%253A%252F%252Fyotpo.com%252Fgo%252FfCxRYxiu%26review%3DI%2Bloved%2Beverything%2Bin%2Bthis%2Bpackage%2BIt%2Bmade%2Bme%2Bwant%2Bto%2Btry%2Beverything%2Bfrom%2BLange.%2BLange%2Bis%2Bnow%2Bmy%2Bgo%2Bto%2Bhair%2Bplace%26social_title%3DLoved&amp;redirect_uri=http%3A%2F%2Fmy.yotpo.com%2Fshares%3Freview_id%3D60957721">
+                            <i class="facebook share">facebook</i>
+                          </a>
+                        </label>
+                        <span class="yotpo-icon yotpo-icon-dot"></span>
+                      </span>
+                      <span data-social="twitter">
+                        <label class="y-label yotpo-action">
+                          <a class="social-link popup-link" data-network="twitter" href="https://twitter.com/intent/tweet?text=I+loved+everything+in+this+package+It+made+me+want+to+try+everything+from+Lange.+Lange+is+now+my+go+to+hair+place&amp;url=https%3A%2F%2Fyotpo.com%2Fgo%2Ff7tq1zU5&amp;via=yotpo">
+                            <i class="twitter share">twitter</i>
+                          </a>
+                        </label>
+                        <span class="yotpo-icon yotpo-icon-dot"></span>
+                      </span>
+                      <span data-social="linkedin">
+                        <label class="y-label yotpo-action">
+                          <a class="social-link popup-link" data-network="LinkedIn" href="https://www.linkedin.com/shareArticle?mini=true&amp;source=Yotpo&amp;summary=I+loved+everything+in+this+package+It+made+me+want+to+try+everything+from+Lange.+Lange+is+now+my+go+to+hair+place&amp;title=Loved&amp;url=https%3A%2F%2Fyotpo.com%2Fgo%2Fx2VoXH8f">
+                            <i class="LinkedIn share">LinkedIn</i>
+                          </a>
+                        </label>
+                        <span class="yotpo-icon yotpo-icon-dot"></span>
+                      </span>
+                      <span data-social="google">
+                        <label class="y-label yotpo-action">
+                          <a class="social-link popup-link" data-network="google" href="https://plus.google.com/share?url=https%3A%2F%2Fyotpo.com%2Fgo%2FiiL9w3B9">
+                            <i class="google share">google</i>
+                          </a>
+                        </label>
+                        <span class="yotpo-icon yotpo-icon-separator"></span>
+                      </span>
+                      <span class="yotpo-icon yotpo-icon-seperator"></span>
+                    </span>
+                  </span>
+                </div>
+                <div class="yotpo-helpful">
+                  <label class="y-label label-helpful">Was this review helpful?</label>
+                  <div class="yotpo-icon-btn-small transparent-color-btn vote-btn" data-type="up">
+                    <span class="yotpo-icon yotpo-icon-thumbs-up"></span>
+                  </div>
+                  <label class="y-label yotpo-sum vote-sum" data-type="up">{{ image.review.votes_up }}</label>
+                  <div class="yotpo-icon-btn-small transparent-color-btn vote-btn" data-type="down">
+                    <span class="yotpo-icon yotpo-icon-thumbs-down"></span>
+                  </div>
+                  <label class="y-label yotpo-sum vote-sum" data-type="down">{{ image.review.votes_down }}</label>
+                </div>
+                <div class="footer-additional-actions">
+                  <label class="y-label yotpo-review-date">{{ image.review.created_time | formatDate }}</label>
+                </div>
+                <div class="yotpo-clr"></div>
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
+      
+      <div class="yotpo yotpo-lightbox-outer">
+        <div class="yotpo yotpo-lightbox yotpo-hidden">
+          <div class="yotpo-display-wrapper">
+            <div class="yotpo yotpo-modal">
+              <div class="yotpo-modal-mask"></div>
+              <div class="yotpo-lightbox-container yotpo-pictures-gallery">
+                <div class="yotpo-lightbox-slider-container">
+                  <div class="yotpo-lightbox-arrows">
+                    <span class="yotpo-icon yotpo-icon-left-arrow-thin yotpo-hidden"></span>
+                    <span class="yotpo-icon yotpo-icon-right-arrow-thin yotpo-hidden"></span>
+                  </div>
+                  <div class="yotpo-icon-btn-small">
+                    <span class="yotpo-icon yotpo-icon-cross"></span>
+                  </div>
+                  <div class="yotpo-modal-dialog">
+                    <div class="yotpo-modal-content">
+                      <div class="yotpo-lightbox-fade-container">
+                        <div class="y-slider-container y-slide-left-animations" style="width:100%">
+                          <div class="yotpo-lightbox-image-container yotpo-hidden" style="width:100%">
+                            <img class="yotpo-lightbox-image" src="" data-image-id="">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="yotpo-image-loader-wrapper">
+                        <div class="yotpo-image-loader">Loading...</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="yotpo-lightbox-content-container">
+                  <div></div>
+                </div>
+                <div class="yotpo-label yotpo-small-box ">
+                  <span class="yotpo-logo-title">
+                    <a class="" target="_blank" href="http://my.yotpo.com/landing_page?redirect=https%3A%2F%2Fwww.yotpo.com%2Fverified-product-reviews-by-yotpo%2F&amp;utm_campaign=branding_link_reviews_widget_v2&amp;utm_medium=widget&amp;utm_source=langehair.com">Powered by</a>
+                  </span>
+                  <div class="yotpo-logo-bg-white yotpo-icon-btn-small">
+                    <a href="http://my.yotpo.com/landing_page?redirect=https%3A%2F%2Fwww.yotpo.com%2Fverified-product-reviews-by-yotpo%2F&amp;utm_campaign=branding_link_reviews_widget_v2&amp;utm_medium=widget&amp;utm_source=langehair.com"
+                       class="yotpo-icon yotpo-icon-yotpo-logo-text" target="_blank">
+                      <span class="sr-only"></span>
+                    </a>
+                  </div>
+                  <div class="yotpo-logo-line"> </div>
+                  <div class="yotpo-clr"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  
+  <button v-on:click="getImages()" class="home-page-button yotpo-load-more yotpo-hidden">Load More</button>
+</div>
+  <div class="yotpo yotpo-loading">
+    <div class="center">
+    	<div class="yotpo-image-loader">Loading...</div>
+    </div>
+  </div>
+{% endraw %}
+<script defer>
+var windowSize;
+var yotpoUGCGallerySize = function() {
+  var ww = window.innerWidth;
+  if (ww > 991 && document.getElementById('ib-yotpo-ugc-gallery').classList.contains('yotpo-size-6')===false) {
+    document.getElementById('ib-yotpo-ugc-gallery').className = 'yotpo-real-results yotpo-size-6';
+  } else if (ww > 644 && ww <= 991 && document.getElementById('ib-yotpo-ugc-gallery').classList.contains('yotpo-size-4')===false) {
+    document.getElementById('ib-yotpo-ugc-gallery').className = 'yotpo-real-results yotpo-size-4';
+  } else if (ww > 524 && ww <= 644 && document.getElementById('ib-yotpo-ugc-gallery').classList.contains('yotpo-size-3')===false) {
+    document.getElementById('ib-yotpo-ugc-gallery').className = 'yotpo-real-results yotpo-size-3';
+  } else if (ww > 349 && ww <= 524 && document.getElementById('ib-yotpo-ugc-gallery').classList.contains('yotpo-size-2')===false) {
+    document.getElementById('ib-yotpo-ugc-gallery').className = 'yotpo-real-results yotpo-size-2';
+  } else if (ww <= 349 && document.getElementById('ib-yotpo-ugc-gallery').classList.contains('yotpo-size-1')===false) {
+    document.getElementById('ib-yotpo-ugc-gallery').className = 'yotpo-real-results yotpo-size-1';
+  }
+}
+
+window.onload = function() {
+  var head  = document.getElementsByTagName('head')[0];
+  var link  = document.createElement('link');
+  link.id   = 'yotpo-ugc-gallery';
+  link.rel  = 'stylesheet';
+  link.type = 'text/css';
+  link.href = '{{ 'yotpo-ugc-gallery.css' | asset_url }}';
+  link.media = 'all';
+  head.appendChild(link);
+  window.vueYotpoUGCGallery = new Vue({
+    el: '#ib-yotpo-ugc-gallery',
+    data: {
+      yotpoAppKey: yotpo.appKey,
+      perPage: 48,
+      currentPage: 0,
+      instagramCount: 0,
+      reviewCount: 0,
+      images: []
+    },
+    created: function () {
+      this.getImages();
+      yotpoUGCGallerySize();
+      window.addEventListener('resize',function() {
+        clearTimeout(windowSize);
+        windowSize = setTimeout(yotpoUGCGallerySize(),100);
+      });
+      document.onkeydown = function(evt) {
+        evt = evt || window.event;
+        var isEscape = false;
+        var isRight = false;
+        var isLeft = false;
+        if ("key" in evt) {
+          isEscape = (evt.key == "Escape" || evt.key == "Esc");
+          isRight = (evt.key == "ArrowRight" ||evt.key == 39);
+          isLeft = (evt.key == "ArrowLeft" ||evt.key == 37);
+        } else {
+          isEscape = (evt.keyCode == 27);
+          isRight = (evt.keyCode == 39);
+          isLeft = (evt.keyCode == 37);
+        }
+        if (isEscape) {
+          vueYotpoUGCGallery.closePopup();
+        }
+        	
+        if (isLeft || isRight) {
+          var oglb = document.getElementsByClassName('yotpo yotpo-lightbox-outer');
+          if (oglb.length > 1) {
+            var clnlb = oglb[1];
+            var direction = isLeft == true ? "left" : "right";
+            var targ = clnlb.querySelector('.yotpo-icon-' + direction + '-arrow-thin');
+            if (targ) { targ.click(); }
+          }
+        }
+      };
+    },
+    methods: {
+      openPopup: function (image,index,opened) {
+        var self = this;
+        if (typeof(opened)==='undefined') {
+          opened = false;
+        }
+        var oglb = document.getElementsByClassName('yotpo yotpo-lightbox-outer');
+        if (opened) {
+          //the instance already exists, switch it
+          if (oglb.length > 1) {
+            var clnlb = oglb[1];
+            var slider_content = document.getElementsByClassName('yotpo-slider-content-'+image.image_id)[0].cloneNode(true);
+            
+            clnlb.querySelector('.yotpo-icon-right-arrow-thin').classList.add('yotpo-hidden');
+          	clnlb.querySelector('.yotpo-icon-left-arrow-thin').classList.add('yotpo-hidden');
+            clnlb.querySelector('.yotpo-lightbox-content-container div').innerHTML = '';
+            clnlb.querySelector('.yotpo-lightbox-content-container div').appendChild(slider_content);
+            clnlb.querySelector('.yotpo-lightbox-image-container').classList.add('yotpo-hidden');
+            clnlb.querySelector('.yotpo-lightbox-image').setAttribute('src','');
+          	clnlb.querySelector('.yotpo-image-loader-wrapper').classList.remove('yotpo-hidden');
+          } else {
+            opened = false;
+          }
+        } 
+        if (opened===false) {
+          //make new instance
+          var clnlb = oglb[0].cloneNode(true);
+          document.body.appendChild(clnlb);
+          var slider_content = document.getElementsByClassName('yotpo-slider-content-'+image.image_id)[0].cloneNode(true);
+          clnlb.querySelector('.yotpo-lightbox-content-container div').appendChild(slider_content);
+          //Close listeners
+          var closeElements = clnlb.querySelectorAll('.yotpo-modal-mask, .yotpo-icon-cross');
+          for (var i = 0; i < closeElements.length; i++) {
+            closeElements[i].addEventListener("click", function() {
+              window.vueYotpoUGCGallery.closePopup();
+            });
+          }
+        }
+        
+        //Choose Tagged Product
+        var chooseTagged = function(prod) {
+          var targ = $(prod);
+          if (!targ.hasClass('yotpo-lightbox-product-selected')) {
+            $('.yotpo-modal-active .yotpo-lightbox-product-select-image[data-product-id]').removeClass('yotpo-lightbox-product-selected');
+            targ.addClass('yotpo-lightbox-product-selected');
+            var prodID = targ.attr('data-product-id');
+            $('.yotpo-modal-active .yotpo-lightbox-product').addClass('yotpo-hidden');
+            $('.yotpo-modal-active .yotpo-lightbox-product[data-product-id=' + prodID + ']').removeClass('yotpo-hidden');
+          }
+          
+        }
+        
+        //Load image
+        var main_img = clnlb.querySelector('.yotpo-lightbox-image');
+        var img_loaded = function() {
+          main_img.removeEventListener('load', img_loaded);
+          clnlb.querySelector('.yotpo-lightbox').classList.remove('yotpo-hidden');
+          clnlb.querySelector('.yotpo-lightbox-image-container').classList.remove('yotpo-hidden');
+          clnlb.querySelector('.yotpo-image-loader-wrapper').classList.add('yotpo-hidden');
+          //Next/Prev Listeners
+          var switchNext = function () {
+            self.switchSlide(index,"next");
+            clnlb.querySelector('.yotpo-icon-right-arrow-thin').removeEventListener('click', switchNext, true);
+          }
+          var switchPrev = function () {
+            self.switchSlide(index,"prev");
+            clnlb.querySelector('.yotpo-icon-left-arrow-thin').removeEventListener('click', switchPrev, true);
+          }
+          clnlb.querySelector('.yotpo-icon-right-arrow-thin').addEventListener('click', switchNext, true);
+          clnlb.querySelector('.yotpo-icon-left-arrow-thin').addEventListener('click', switchPrev, true);
+          clnlb.querySelector('.yotpo-icon-right-arrow-thin').classList.remove('yotpo-hidden');
+          clnlb.querySelector('.yotpo-icon-left-arrow-thin').classList.remove('yotpo-hidden');
+          var taggedProducts = clnlb.querySelectorAll('.yotpo-lightbox-product-select-image');
+          for (var i = 0; i < taggedProducts.length; i++) {
+            var taggedID = taggedProducts[i].getAttribute('data-product-id');
+            taggedProducts[i].addEventListener('click', function() {
+              chooseTagged(this);
+            }, true);
+          }
+        }
+        if (main_img.complete) {
+          img_loaded();
+        } else {
+          main_img.addEventListener('load', img_loaded)
+        }
+        main_img.setAttribute('src',image.original_image_url);
+        clnlb.querySelector('.yotpo.yotpo-modal').classList.add('yotpo-modal-active');
+        clnlb.querySelector('.yotpo-pictures-gallery').classList.add('yotpo-active-display');
+        window.setTimeout(function() {
+        	clnlb.querySelector('.yotpo-modal-mask').classList.add('yotpo-active-display');
+        },100);
+      },
+      closePopup: function () {
+        var oglb = document.getElementsByClassName('yotpo yotpo-lightbox-outer');
+        if (oglb.length > 1) {
+          var clnlb = oglb[1];
+          clnlb.querySelector('.yotpo-icon-right-arrow-thin').remove();
+          clnlb.querySelector('.yotpo-icon-left-arrow-thin').remove();
+          clnlb.querySelector('.yotpo-pictures-gallery').classList.remove('yotpo-active-display');
+          clnlb.querySelector('.yotpo-modal-mask').classList.remove('yotpo-active-display');
+          window.setTimeout(function() {
+            clnlb.remove();
+          },500);
+        }
+      },
+      switchSlide: function (index,direction) {
+        var self = this;
+        var oglb = document.getElementsByClassName('yotpo yotpo-lightbox-outer');
+        if (oglb.length > 1) {
+          var clnlb = oglb[1];
+          if (direction == "next") {
+            var targ = index+1;
+            if (targ == self.images.length) {
+              targ = 0;
+            }
+          } else if (direction == "prev") {
+            var targ = index-1;
+            if (targ < 0) {
+              targ = self.images.length-1;
+            }
+          }
+          self.openPopup(self.images[targ],targ,true);
+        }
+      },
+      getImages: function () {
+        var self = this;
+        var img_loader = document.querySelector('.yotpo-loading .yotpo-image-loader');
+        var load_more_btn = document.querySelector('button.yotpo-load-more');
+        img_loader.classList.remove('yotpo-hidden');
+        if (!load_more_btn.classList.contains('yotpo-hidden')) {
+          load_more_btn.classList.add('yotpo-hidden');
+        }
+        var url = 'https://api.yotpo.com/v1/widget/' + this.yotpoAppKey + '/albums/by_name?album_name=' + encodeURIComponent('UGC Gallery') + '&offset%5Binstagram%5D=' + this.instagramCount + '&offset%5Breview%5D=' + this.reviewCount + '&per_page=' + this.perPage;
+        $.getJSON(url, function (data) {
+          self.images = self.images.concat(data.response.images);
+          document.getElementById('ib-yotpo-ugc-gallery').classList.remove('yotpo-hidden');
+          img_loader.classList.add('yotpo-hidden');
+          self.currentPage ++;
+          var instagramArray = self.images.filter(function(image) { return image.source == 'instagram' });
+          var reviewArray = self.images.filter(function(image) { return image.source == 'review' });
+          self.instagramCount = instagramArray.length;
+          self.reviewCount = reviewArray.length;
+          load_more_btn = document.querySelector('button.yotpo-load-more');
+          load_more_btn.classList.remove('yotpo-hidden');
+        });
+      }
+    },
+  });
+  Vue.filter('formatDate', function(value) {
+    if (value) {
+      var date = new Date(value);
+      var formattedDate = ('0' + date.getDate()).slice(-2);
+      var formattedMonth = ('0' + (date.getMonth() + 1)).slice(-2);
+      var formattedYear = date.getFullYear().toString().substr(2,2);
+
+      var dateString = formattedMonth + '/' + formattedDate + '/' + formattedYear;
+
+      return dateString;
+    }
+  });
+  Vue.filter('firstChar', function(value) {
+    if (value) {
+      return value.charAt(0);
+    }
+  });
+}
+</script>
+</div>

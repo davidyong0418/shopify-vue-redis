@@ -1,0 +1,128 @@
+{% include 'shogun-products', content: page %}
+
+<img class="hero-img--desktop" src="{{ 'vip_rewards_desktop.jpg' | asset_img_url: '1800x' }}" />
+<img class="hero-img--mobile" src="{{ 'vip_rewards_mobile.jpg' | asset_img_url: '768x' }}" />
+
+<div class="container rewards-explainer">
+  <div class="section signup">
+    <p>By becoming a part of our VIP Rewards Program, you’ll be able to earn points towards <strong>FREE</strong> gift cards, discounts and special offers. You automatically receive 200 points just by signing up, so what are you waiting for?!</p>
+    <ul class="two-columns">
+      <li><a class="button" href="/account/login">Log In</a></li>
+      <li><a class="button" href="/account/register">Sign up</a></li>
+    </ul>
+  </div>
+  <div class="section benefits pink-bg">
+    <h2>SHOP. EARN. REDEEM. REPEAT.</h2>
+    <ul class="icons">
+      <li>
+        <img src="{{ 'rewards-create-account.svg' | asset_url }}" width="80" />
+        <span class="title">Create an Account</span>
+        <span class="points">200 Points</span>
+      </li>
+      <li>
+        <img src="{{ 'rewards-place-an-order.svg' | asset_url }}" width="80" />
+        <span class="title">Place an Order</span>
+        <span class="points">2-6 Points for every $1 Spent*</span>
+        <span class="disclaimer">*Tier Dependent</span>
+      </li>
+      <li>
+        <img src="{{ 'rewards-review-products.svg' | asset_url }}" width="80" />
+        <span class="title">Review Products</span>
+        <span class="points">100 Points</span>
+      </li>
+      <li>
+        <img src="{{ 'rewards-share-on-facebook.svg' | asset_url }}" width="80" />
+        <span class="title">Share on Facebook</span>
+        <span class="points">50 Points</span>
+      </li>
+      <li>
+        <img src="{{ 'rewards-like-on-facebook.svg' | asset_url }}" width="80" />
+        <span class="title">Like on Facebook</span>
+        <span class="points">100 Points</span>
+      </li>
+      <li>
+        <img src="{{ 'rewards-follow-on-ig.svg' | asset_url }}" width="80" />
+        <span class="title">Follow on Instagram</span>
+        <span class="points">100 Points</span>
+      </li>
+      <li>
+        <img src="{{ 'rewards-celebrate-bday.svg' | asset_url }}" width="80" />
+        <span class="title">Celebrate a Birthday</span>
+        <span class="points">200 Points</span>
+      </li>
+    </ul>
+  </div>
+  <div class="section redeem-points">
+    <h2>Redeem Points</h2>
+    <p>Convert your points into L’ange gift cards - it’s so easy!<br/><strong>$1 = 100 points</strong></p>
+    <ul class="three-columns">
+      <li>
+        <div class="gift-card">
+          <span class="card-value"><span class="dollar-sign">$</span>5</span>
+          <img src="{{ 'rewards-gift-card.svg' | asset_url }}" width="120" />
+        </div>
+        <span class="description">500 Points<br/>gets you a <strong>$5 Gift Card</strong></span>
+      </li>
+      <li>
+        <div class="gift-card">
+          <span class="card-value"><span class="dollar-sign">$</span>10</span>
+          <img src="{{ 'rewards-gift-card.svg' | asset_url }}" width="120" />
+        </div>
+        <span class="description">1000 Points<br/>gets you a <strong>$10 Gift Card</strong></span>
+      </li>
+      <li>
+        <div class="gift-card">
+          <span class="card-value"><span class="dollar-sign">$</span>25</span>
+          <img src="{{ 'rewards-gift-card.svg' | asset_url }}" width="120" />
+        </div>
+        <span class="description">2500 Points<br/>gets you a <strong>$25 Gift Card</strong></span>
+      </li>
+    </ul>
+  </div>
+  <div class="section refer pink-bg">
+    <h2>Refer a Friend</h2>
+    <p>Spread the love and earn even more points!</p>
+    <ul class="two-columns">
+      <li>
+        <span class="title">You Get</span>
+        <span class="offer">$5 Gift Card</span>
+      </li>
+      <li>
+        <span class="title">They Get</span>
+        <span class="offer">50% Off Coupon</span>
+      </li>
+    </ul>
+  </div>
+  <div class="section tiers">
+    <h2>Unlock Next Level VIP Status</h2>
+    <p>The more you buy the higher you fly!</p>
+    <ul class="three-columns">
+      <li>
+        <img src="{{ 'rewards-silver-tier.svg' | asset_url }}" width="150" />
+        <span class="tier">Silver Class</span>
+        <div class="divider"></div>
+        <span class="description">New Customers</span>
+        <span class="points">$1 = 2 Points</span>
+      </li>
+      <li>
+        <img src="{{ 'rewards-gold-tier.svg' | asset_url }}" width="150" />
+        <span class="tier">Gold Class</span>
+        <div class="divider"></div>
+        <span class="description">$250+ Spent in the last year</span>
+        <span class="points">$1 = 4 Points</span>
+      </li>
+      <li>
+        <img src="{{ 'rewards-rose-tier.svg' | asset_url }}" width="150" />
+        <span class="tier">Rose Class</span>
+        <div class="divider"></div>
+        <span class="description">$500+ Spent in the last year</span>
+        <span class="points">$1 = 6 Points</span>
+      </li>
+    </ul>
+  </div>
+  <div class="section">
+    <a class="button" href="#" data-st-intent="st:core:home" data-activator="#">Join to Start Earning Points Today</a>
+  </div>
+  {{ page.content }}
+</div>
+

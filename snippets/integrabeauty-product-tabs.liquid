@@ -1,0 +1,97 @@
+{% assign active = true %}
+
+<div id="productAccordion" class="accordion">
+
+  {% if product.metafields.product.features %}      
+    <div class="accordion-section">
+      <a class="accordion-section-title" href="#accordion-1">
+        <div class="section-title">The Inside</div>
+        <div class="open-sign">+</div>
+      </a>
+
+      <div id="accordion-1" class="accordion-section-content" style="display: none;">
+        {{ product.metafields.product.features }}
+      </div>
+    </div>           
+  {% endif %}
+  
+  {% if product.metafields.product.how_to %}      
+    <div class="accordion-section">
+      <a class="accordion-section-title" href="#accordion-2">
+        <div class="section-title">How To</div>
+        <div class="open-sign">+</div>
+      </a>
+
+      <div id="accordion-2" class="accordion-section-content" style="display: none;">
+        {{ product.metafields.product.how_to }}
+      </div>
+    </div>
+  {% endif %}
+  
+  {% if product.metafields.product.ingredients %}      
+    <div class="accordion-section">
+      <a class="accordion-section-title" href="#accordion-3">
+        <div class="section-title">Ingredients</div>
+        <div class="open-sign">+</div>
+      </a>
+
+      <div id="accordion-3" class="accordion-section-content" style="display: none;">
+        {{ product.metafields.product.ingredients }}
+      </div>
+    </div>
+  {% endif %}
+  
+  {% if product.metafields.product.faq %}       
+    <div class="accordion-section">
+      <a class="accordion-section-title" href="#accordion-4">
+        <div class="section-title">FAQs</div>
+        <div class="open-sign">+</div>
+      </a>
+
+      <div id="accordion-4" class="accordion-section-content" style="display: none;">
+        {{ product.metafields.product.faq }}
+      </div>
+    </div>
+  {% endif %}
+  
+</div>
+
+
+
+<script>
+$(document).ready(function() {
+  if($('#productAccordion.accordion').length > 0) {
+    function close_accordion_section() {
+      $('#productAccordion.accordion .accordion-section-title').removeClass('active');
+      $('#productAccordion.accordion .accordion-section-content').slideUp(300).removeClass('open');
+    }
+
+    $('#productAccordion .accordion-section-title').click(function(e) {
+      e.preventDefault();
+
+      // Grab current anchor value
+      var currentAttrValue = $(this).attr('href');
+      var openItem = false;
+      if(!$(this).hasClass('active')) {
+        openItem = true;
+      }
+
+      close_accordion_section();
+      $('#productAccordion .accordion-section-title .open-sign').html('+');
+
+      if(openItem) {
+        var currentAccordionItem = $(this);
+        // Wait until the previous item has been closed
+        window.setTimeout(function() {
+          currentAccordionItem.addClass('active');
+          currentAccordionItem.find('.open-sign').html('&mdash;');
+          $('.accordion ' + currentAttrValue).slideDown(300).addClass('open');
+
+          // Move to the new element
+          $('html, body').animate({scrollTop: String(currentAccordionItem.position().top) + 'px'}, 'slow');
+        }, 300);
+      }
+    });
+  }
+});
+</script>

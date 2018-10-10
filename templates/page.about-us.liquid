@@ -1,0 +1,918 @@
+{% include 'shogun-products', content: page %}
+<style>
+  /* Fonts */
+  @font-face {
+    font-family: 'Abuget';
+    src: url(' {{ 'Abuget.ttf' | asset_url }} ') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Playfair';
+    src: url(' {{ 'PlayfairDisplay-Regular.ttf' | asset_url }} ') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Oswald';
+    src: url(' {{ 'Oswald-Regular.ttf' | asset_url }} ') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Lato';
+    src: url(' {{ 'Lato-Regular.ttf' | asset_url }} ') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  /* Mobile */
+  * {
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .heading-main__about-us {
+    color: rgb(128, 128, 128);
+    font-family: 'Playfair', sans-serif;
+    font-size: 4.444em;
+    padding-top: 15px;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .header__about-us {
+    padding-bottom: 25px;
+  }
+
+  .heading {
+    font-family: 'Abuget', sans-serif;
+    font-size: 5.500em;
+    margin: 0 auto;
+    text-align: center;
+    line-height: 0.70;
+    padding-bottom: 12px;
+    padding-top: 18px;
+  }
+
+  .heading__our-story--understanding {
+    padding-top: 86px;
+  }
+
+  .heading__social {
+    font-family: 'Oswald', sans-serif;
+    font-size: 30px;
+    font-weight: 300;
+    margin: 0 auto;
+    max-width: 453.735px;
+    padding-bottom: 0;
+    padding-top: 25px;
+  }
+
+  .container__buttons {
+    border: 2px solid rgb(234, 204, 206);
+    border-left: none;
+    border-right: none;
+    cursor: pointer;
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    justify-content: center;
+    -webkit-justify-content: center;
+    -webkit-moz-content: center;
+  }
+
+  .section {
+    padding-top: 50px;
+  }
+
+  .figure {
+    display: inline-block;
+  }
+
+  .figure__hero {
+    width: 100%;
+  }
+
+  .figure__hero--our-community {
+    padding-top: 30px;
+  }
+
+  .figure__our-story--friends {
+    display: flex;
+    justify-content: center;
+    max-height: 566px;
+    max-width: 1500px;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .figure__image--about-us {
+    width: 100%;
+    height: auto;
+  }
+
+  .figure__image--our-community {
+    height: auto;
+    width: 100%;
+  }
+
+  .figcaption__our-story {
+    font-size: 25.333333333333332px;
+    text-align: center;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .tablink {
+    background-color: transparent;
+    border: none;
+    color: #000;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.889em;
+    font-weight: 100;
+    padding-bottom: 2px;
+    padding-top: 2px;
+    text-transform: uppercase;
+  }
+
+  .paragraph {
+    color: #000;
+    font-family: 'Lato', sans-serif;
+    font-size: 1.4em;
+    font-weight: 300;
+    margin: 0 auto;
+    max-width: 384px;
+  }
+
+  .paragraph__our-story {
+    padding-top: 35px;
+    text-align: left;
+  }
+
+  .paragraph__our-community {
+    padding-top: 30px;
+  }
+
+  .paragraph__center {
+    text-align: center;
+  }
+
+  .figcaption__our-story {
+    color: #000;
+    font-family: 'Play Fair';
+    margin: 0 auto;
+    max-width: 384px;
+    padding-top: 30px;
+  }
+
+  .aside__our-story {
+    padding-top: 45px;
+    text-align: center;
+  }
+
+  .figure__image--friends {
+    padding-top: 60px;
+  }
+
+  .figure__instagram {
+    position: relative;
+  }
+
+  .figure__instagram-link {
+    cursor: pointer;
+  }
+
+  /* Langesociety grid */
+  .grid__instagram {
+    display: grid;
+    height: 100%;
+    grid-template-columns: 12.190em 12.190em 12.190em 12.190em 12.190em;
+    grid-template-rows: 12.19em 22.19em;
+    grid-gap: 0;
+    grid-template-areas: "grid__instagram__cell-one grid__instagram__cell-two grid__instagram__cell-three grid__instagram__cell-four grid__instagram__cell-five""grid__instagram__cell-six grid__instagram__cell-seven grid__instagram__cell-eight grid__instagram__cell-nine grid__instagram__cell-ten";
+    overflow-y: auto;
+    padding-top: 30px;
+    /* IE */
+    display: -ms-grid;
+    -ms-grid-columns: 12.19em 12.19em 12.19em 12.19em 12.19em;
+    -ms-grid-rows: 12.19em 22.19em;
+  }
+
+  .grid__instagram__cell-one {
+    grid-area: grid__instagram__cell-one;
+    /* IE */
+    -ms-grid-row: 1;
+    -ms-grid-row-span: 1;
+    -ms-grid-column: 1;
+    -ms-grid-column-span: 1;
+  }
+
+  .grid__instagram__cell-two {
+    grid-area: grid__instagram__cell-two;
+    /* IE */
+    -ms-grid-row: 1;
+    -ms-grid-row-span: 1;
+    -ms-grid-column: 2;
+    -ms-grid-column-span: 1;
+  }
+
+  .grid__instagram__cell-three {
+    grid-area: grid__instagram__cell-three;
+    /* IE */
+    -ms-grid-row: 1;
+    -ms-grid-row-span: 1;
+    -ms-grid-column: 3;
+    -ms-grid-column-span: 1;
+  }
+
+  .grid__instagram__cell-four {
+    grid-area: grid__instagram__cell-four;
+    /* IE */
+    -ms-grid-row: 1;
+    -ms-grid-row-span: 1;
+    -ms-grid-column: 4;
+    -ms-grid-column-span: 1;
+  }
+
+  .grid__instagram__cell-five {
+    grid-area: grid__instagram__cell-five;
+    /* IE */
+    -ms-grid-row: 1;
+    -ms-grid-row-span: 1;
+    -ms-grid-column: 5;
+    -ms-grid-column-span: 1;
+  }
+
+  .grid__instagram__cell-six {
+    grid-area: grid__instagram__cell-six;
+    /* IE */
+    -ms-grid-row: 2;
+    -ms-grid-row-span: 1;
+    -ms-grid-column: 1;
+    -ms-grid-column-span: 1;
+  }
+
+  .grid__instagram__cell-seven {
+    grid-area: grid__instagram__cell-seven;
+    /* IE */
+    -ms-grid-row: 2;
+    -ms-grid-row-span: 1;
+    -ms-grid-column: 2;
+    -ms-grid-column-span: 1;
+  }
+
+  .grid__instagram__cell-eight {
+    grid-area: grid__instagram__cell-eight;
+    /* IE */
+    -ms-grid-row: 2;
+    -ms-grid-row-span: 1;
+    -ms-grid-column: 3;
+    -ms-grid-column-span: 1;
+  }
+
+  .grid__instagram__cell-nine {
+    grid-area: grid__instagram__cell-nine;
+    /* IE */
+    -ms-grid-row: 2;
+    -ms-grid-row-span: 1;
+    -ms-grid-column: 4;
+    -ms-grid-column-span: 1;
+  }
+
+  .grid__instagram__cell-ten {
+    grid-area: grid__instagram__cell-ten;
+    /* IE */
+    -ms-grid-row: 2;
+    -ms-grid-row-span: 1;
+    -ms-grid-column: 5;
+    -ms-grid-column-span: 1;
+  }
+
+  /* Langsociety grid */
+
+
+  /* Dynamic class styles */
+  .current {
+    color: rgb(234, 204, 206);
+    font-weight: bold;
+    opacity: 1;
+    animation-name: fadeInOpacity;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-duration: 400ms;
+    position: relative;
+  }
+
+  .current:after {
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 15px solid rgb(234, 204, 206);
+    content: " ";
+    position: absolute;
+    top: 100%;
+  }
+
+  .current.button__about-us:after {
+    left: 26.5%;
+  }
+
+  .current.button__our-story:after {
+    left: 31.7%;
+  }
+
+  .current.button__our-mission:after {
+    left: 34%;
+  }
+
+  .current.button__our-community:after {
+    left: 41.1%;
+  }
+
+  @media(min-width: 991px) {
+    .current.button__about-us:after {
+      left: 45.5%;
+    }
+
+    .current.button__our-story:after {
+      left: 45.7%;
+    }
+
+    .current.button__our-mission:after {
+      left: 46%;
+    }
+
+    .current.button__our-community:after {
+      left: 45.1%;
+    }
+  }
+
+  /* Transitions */
+  .fade-in {
+    opacity: 1;
+    animation-name: fadeInOpacity;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-duration: 400ms;
+  }
+
+  @keyframes fadeInOpacity {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .appear {
+    opacity: 0;
+    transform: translate(0, 50px);
+    transition: all 2.5s;
+  }
+
+  .appear.visible {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+
+  .figure__instagram-link:before {
+    content: '';
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 0px;
+    height: 100%;
+    background: rgba(255,255,255,0.3);
+    transition: all .25s ease;
+  }
+
+  .figure__instagram-link:hover:before {
+    width: 100%;
+  } 
+
+  /* Transitions */
+
+  /* Medium */
+  @media(min-width: 991px) {
+    .container__about-us {
+      margin-right: auto;
+      margin-left: auto;
+      /* padding-left: 15px;
+    padding-right: 15px; */
+    }
+
+    .about-us__inner {
+      display: flex;
+      display: -webkit-flex;
+      flex-direction: row-reverse;
+    }
+
+    .about-us__inner--our-story {
+      display: flex;
+      display: -webkit-flex;
+      flex-flow: row;
+    }
+
+    .container__buttons {
+      display: flex;
+      display: -webkit-flex;
+      justify-content: space-evenly;
+      -ms-flex-pack: space-between;
+      -webkit-box-pack: justify;
+      -webkit-justify-content: space-evenly;
+      -webkit-moz-content: space-evenly;
+    }
+
+    .tablink {
+      cursor: pointer;
+      font-size: 1.270em;
+      min-width: 13.23em;
+    }
+
+    .section {
+      margin: 0 auto;
+      max-width: 1000px;
+      padding-top: 80px;
+      width: 1170px;
+    }
+
+    .section__our-community {
+      max-width: 100%;
+      min-width: 100%;
+    }
+
+    .heading {
+      margin: 0;
+      text-align: left;
+      width: 100%;
+    }
+
+    .heading__our-story {
+      padding-right: 50px;
+    }
+
+    .heading__our-community {
+      margin: inherit;
+      text-align: center;
+    }
+
+    .heading__social {
+      font-size: 60px;
+      max-width: inherit;
+      padding-top: 100px;
+      text-align: center;
+    }
+
+    .paragraph {
+      margin: 0;
+      max-width: 100%;
+    }
+
+    .figure__img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+
+    .figure__hero {
+      display: flex;
+      display: -webkit-flex;
+      justify-content: center;
+      -webkit-justify-content: center;
+      -moz-justify-content: center;
+      height: auto;
+      max-width: 706px;
+      width: 100%;
+    }
+
+    .figure__hero--our-story {
+      height: auto;
+      margin: 0 60px 0 0;
+      max-width: 635px;
+      width: 100%;
+    }
+
+    /* Our Community container for header and hero so they can be reverse positioned on desktop and mobile */
+    .container__header-hero--flex-modifier {
+      display: flex;
+      display: -webkit-flex;
+      flex-direction: column-reverse;
+      align-items: center;
+      margin: 0 auto;
+      max-width: 1170px;
+      -webkit-box-align: center;
+      -moz-box-align: center;
+      -ms-flex-align: center;
+      -webkit-align-items: center;
+    }
+
+    /* Our Community container for header and hero so they can be reverse positioned on desktop and mobile End */
+
+    .figure__hero--our-community {
+      overflow: hidden;
+      max-height: 566px;
+      max-width: 1000px;
+      padding-top: 20px;
+    }
+
+    .figure__image--friends {
+      height: auto;
+      object-fit: cover;
+      object-position: top;
+      width: 100%;
+    }
+
+    .figure__image--our-community {
+      object-fit: cover;
+      object-position: 0px -6px;
+    }
+
+    .figure__our-story--friends {
+      padding-top: 50px;
+    }
+
+    .figcaption__our-story {
+      margin: 0;
+      max-width: 100%;
+    }
+
+    .aside {
+      max-width: 670px;
+      padding-top: 0px;
+      position: relative;
+      top: 40px;
+    }
+
+    .aside__about-us {
+      margin: 0 60px 0 0;
+    }
+
+    .aside.aside__our-story {
+      margin: 0 60px 0 0;
+    }
+
+    .aside__our-mission {
+      margin: 0 60px 0 0;
+    }
+
+    .aside__our-community {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .about-us__inner--our-mission {
+      display: flex;
+      display: -webkit-flex;
+      flex-flow: row-reverse;
+    }
+
+    /* Our Story Grid */
+    .article__our-story {
+      display: grid;
+      height: 100%;
+      grid-template-columns: 30% 50% 20%;
+      grid-template-rows: 26rem 26rem 26rem;
+      grid-template-areas: "heading__our-story--integrity paragraph__our-story-integrity .""heading__our-story--open paragraph__our-story--open .""heading__our-story--understanding paragraph__our-story--understanding .";
+      /* IE */
+      display: -ms-grid;
+      -ms-grid-columns: 30% 50% 20%;
+      -ms-grid-rows: 26rem 26rem 26rem;
+    }
+
+    .heading__our-story--integrity {
+      grid-area: heading__our-story--integrity;
+      padding-top: 100px;
+      text-align: right;
+      /* IE */
+      -ms-grid-row: 1;
+      -ms-grid-row-span: 1;
+      -ms-grid-column: 1;
+      -ms-grid-column-span: 1;
+    }
+
+    .paragraph__our-story-integrity {
+      grid-area: paragraph__our-story-integrity;
+      display: flex;
+      display: -webkit-flex;
+      flex-direction: column;
+      justify-content: center;
+      -webkit-justify-content: center;
+      -moz-justify-content: center;
+      text-align: left;
+      /* IE */
+      -ms-grid-row: 1;
+      -ms-grid-row-span: 1;
+      -ms-grid-column: 2;
+      -ms-grid-column-span: 1;
+    }
+
+    .heading__our-story--open {
+      grid-area: heading__our-story--open;
+      padding-top: 70px;
+      text-align: right;
+      /* IE */
+      -ms-grid-row: 2;
+      -ms-grid-row-span: 1;
+      -ms-grid-column: 1;
+      -ms-grid-column-span: 1;
+    }
+
+    .paragraph__our-story--open {
+      grid-area: paragraph__our-story--open;
+      display: flex;
+      display: -webkit-flex;
+      flex-direction: column;
+      justify-content: center;
+      -webkit-justify-content: center;
+      -moz-justify-content: center;
+      text-align: left;
+      /* IE */
+      -ms-grid-row: 2;
+      -ms-grid-row-span: 1;
+      -ms-grid-column: 2;
+      -ms-grid-column-span: 1;
+    }
+
+    .heading__our-story--understanding {
+      grid-area: heading__our-story--understanding;
+      padding-top: 86px;
+      text-align: right;
+      /* IE */
+      -ms-grid-row: 3;
+      -ms-grid-row-span: 1;
+      -ms-grid-column: 1;
+      -ms-grid-column-span: 1;
+    }
+
+    .paragraph__our-story--understanding {
+      grid-area: paragraph__our-story--understanding;
+      display: flex;
+      display: -webkit-flex;
+      flex-direction: column;
+      justify-content: center;
+      -webkit-justify-content: center;
+      -moz-justify-content: center;
+      text-align: left;
+      /* IE */
+      -ms-grid-row: 3;
+      -ms-grid-row-span: 1;
+      -ms-grid-column: 2;
+      -ms-grid-column-span: 1;
+    }
+
+    /* Our Story Grid End */
+
+    /* Langesociety grid */
+    .grid__instagram {
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+      grid-template-rows: 289px 289px;
+      padding-top: 50px;
+      /* IE */
+      -ms-grid-columns: 1fr 1fr 1fr 1fr 1fr;
+      -ms-grid-rows: 289px 289px;
+    }
+
+    /* Langesociety grid */
+  }
+</style>
+
+<div class="container__about-us">
+  {{ page.content }}
+  {% include 'fb-wishlist' %}
+  <div class="header__about-us">
+    <h3 class="heading-main__about-us">About <i>Us</i></h3>
+  </div>
+
+  <div class="container__buttons container">
+    <button id="defaultOpen" class="tablink current button__about-us" onclick="openPage('about_us', this)">About Us</button>
+    <button class="tablink button__our-story" onclick="openPage('our_story', this)" id="defaultOpen">Our Story</button>
+    <button class="tablink button__our-mission" onclick="openPage('our_mission', this)">Our Mission</button>
+    <button class="tablink button__our-community" onclick="openPage('our_community', this)">Our Community</button>
+  </div>
+
+  <section id="about_us" class="section section__about-us fade-in">
+    <div class="about-us__inner">
+      <figure class="figure figure__hero figure__hero--about-us">
+        <img class="figure__img figure__image--about-us" src="{{ 'aboutus.jpg' | asset_img_url: 'grande' }}" alt="Model demonstrating L'ange product">
+      </figure>
+      <aside class="aside aside__about-us container">
+        <h3 class="heading heading__about-us">about us</h3>
+        <p class="paragraph paragraph__about-us">At L’ange, we’re all about creating hair tools and products that fit
+          the lifestyle of the modern woman.</p>
+        <p class="paragraph paragraph__about-us">We know that busy, on-the-go women need high-quality hair solutions
+          that can keep up with the speed of
+          their
+          life, so we’ve designed every single one of our products to work quickly and be easy to use.</p>
+        <p class="paragraph paragraph__about-us">We’ve created industry-leading tools by embracing the latest
+          technological breakthroughs and sparing no
+          expense when it come to the quality of our tools.</p>
+        <p class="paragraph paragraph__about-us">All our hair care products are made only from premium ingredients,
+          gathered from some of the finest
+          sources
+          in the world.</p>
+        <p class="paragraph paragraph__about-us">With L’ange, you know that you’re guaranteed to look and feel your
+          best.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section id="our_story" class="section section__our-story fade-in">
+    <div class="about-us__inner--our-story">
+      <figure class="figure figure__hero figure__hero--our-story">
+        <img class="figure__img figure__image--about-us" src="{{ 'ourstory.jpg' | asset_img_url: 'grande' }}" alt="Model demonstrating L'ange product">
+      </figure>
+      <aside class="aside aside__our-story container">
+        <h3 class="heading heading__our-story">our story</h3>
+        <p class="paragraph paragraph__our-story appear">For over 20 years, our founder Dalia L’ange worked in the hair
+          and beauty industry with the goal of helping women live happier, more fulfilled lives through increased
+          confidence. And in that time, she helped countless women transform their lives through beautiful,
+          healthy hair. But with L’ange, she wanted to take it a step further. She wanted to create a company
+          that brings women together and uses their combined power to support each other and get where they’re
+          going faster. And that’s exactly what she’s done. She’s created the L’ange community, which already has
+          hundreds of thousands of members…But the goal is to reach 2 million women by 2020. And with women like
+          you on our side, we know we’ll get there.</p>
+      </aside>
+    </div>
+    <figure class="figure figure__our-story--friends appear">
+      <img class="figure__img figure__image--friends" src="{{ 'friends.jpg' | asset_img_url: 'grande' }}" alt="Model demonstrating L'ange product">
+    </figure>
+    <figcaption class="figcaption figcaption__our-story appear">
+      <i>If you allow L’ange to be a part of your journey, we consider you family. And as part of our family,
+        you’ll get:</i>
+    </figcaption>
+    <article class="article article__our-story container">
+      <h3 class="heading heading__our-story heading__our-story--integrity appear">integrity</h3>
+      <p class="paragraph paragraph__center paragraph__our-story-integrity appear">Transparency is one of our strongest core
+        values… honesty is the only
+        way to build trust and loyalty.</p>
+      <h3 class="heading heading__our-story heading__our-story--open appear">open communication</h3>
+      <p class="paragraph paragraph__center paragraph__our-story--open appear">We have a robust dialogue with our customers…
+        and it’s how we’re able
+        to continually and tirelessly improve our products.</p>
+      <h3 class="heading heading__our-story heading__our-story--understanding appear">understanding & encouragment</h3>
+      <p class="paragraph paragraph__center paragraph__our-story--understanding appear">We have a robust dialogue with our
+        customers… and it’s how we’re able
+        to continually and tirelessly improve our products.</p>
+    </article>
+  </section>
+
+  <section id="our_mission" class="section section__our-mission fade-in">
+    <div class="about-us__inner--our-mission">
+      <figure class="figure figure__hero figure__hero--our-mission">
+        <img class="figure__img figure__image--about-us" src="{{ 'ourmission.jpg' | asset_img_url: 'grande' }}" alt="Model demonstrating L'ange product">
+      </figure>
+      <aside class="aside aside__our-mission container">
+        <h3 class="heading heading__our-mission appear">our mission</h3>
+        <p class="paragraph paragraph__our-mission appear">L’ange was created with the single-minded goal of improving as
+          many women’s lives as possible by promoting healthier, more luxurious hair.</p>
+        <p class="paragraph paragraph__our-mission appear">We know that there’s no feeling quite like knowing that you
+          look your best… because feeling translates to carrying yourself with more confidence, and living a
+          happier life.</p>
+        <p class="paragraph paragraph__our-mission appear">Using this mindset, we’re aiming to transform the lives of 2
+          million women by the year 2020, and we’re already well on our way.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section id="our_community" class="section section__our-community fade-in">
+    <div class="container__header-hero--flex-modifier">
+      <h3 class="heading heading__our-community">our community</h3>
+      <figure class="figure figure__hero figure__hero--our-community">
+        <img class="figure__img figure__image--our-community" src="{{ 'friends.jpg' | asset_img_url: 'grande' }}" alt="Model demonstrating L'ange product">
+      </figure>
+    </div>
+    <aside class="aside aside__our-community container">
+      <p class="paragraph paragraph__our-community appear">Our community of “L’ange Ladies” is what makes us who we are.
+        Without you, we wouldn’t be able to make a difference in hundreds of thousands of women’s lives.</p>
+      <p class="paragraph paragraph__our-community appear">Your feedback, your inspirational stories, and the pictures
+        of your breathtaking transformations fuel our passion for improving L’ange every day.</p>
+      <p class="paragraph paragraph__our-community appear">Your feedback, your inspirational stories, and the pictures
+        of your breathtaking transformations fuel our passion for improving L’ange every day.</p>
+      <p class="paragraph paragraph__our-community appear">It’s a great way for us to stay in touch, and it’s an
+        excellent place for you to get exclusive deals, helpful tips and tricks, and the latest updates.</p>
+      <p class="paragraph paragraph__our-community appear">Because L’ange doesn’t have customers, we have family.</p>
+    </aside>
+    <div class="social__our-community--container">
+      <h3 class="heading heading__social appear">#LANGESOCIETY</h3>
+      <div class="grid__instagram appear">
+        <div class="grid__instagram__cell-one">
+          <figure class="figure__instagram appear">
+            <a class="figure__instagram-link" href="//www.instagram.com/langehair/" aria-label="L'ange Hair on Instagram"><img
+                class="figure__img figure__image--our-community" src="{{ 'instaone.jpg' | asset_img_url: 'grande' }}"
+                alt="Media from Instagram"></a>
+          </figure>
+        </div>
+        <div class="grid__instagram__cell-two">
+          <figure class="figure__instagram appear">
+            <a class="figure__instagram-link" href="//www.instagram.com/langehair/" aria-label="L'ange Hair on Instagram"><img
+                class="figure__img figure__image--our-community" src="{{ 'instatwo.jpg' | asset_img_url: 'grande' }}"
+                alt="Media from Instagram"></a>
+          </figure>
+        </div>
+        <div class="grid__instagram__cell-three">
+          <figure class="figure__instagram appear">
+            <a class="figure__instagram-link" href="//www.instagram.com/langehair/" aria-label="L'ange Hair on Instagram"><img
+                class="figure__img figure__image--our-community" src="{{ 'instathree.jpg' | asset_img_url: 'grande' }}"
+                alt="Media from Instagram"></a>
+          </figure>
+        </div>
+        <div class="grid__instagram__cell-four">
+          <figure class="figure__instagram appear">
+            <a class="figure__instagram-link" href="//www.instagram.com/langehair/" aria-label="L'ange Hair on Instagram"><img
+                class="figure__img figure__image--our-community" src="{{ 'instafour.jpg' | asset_img_url: 'grande' }}"
+                alt="Media from Instagram"></a>
+          </figure>
+        </div>
+        <div class="grid__instagram__cell-five">
+          <figure class="figure__instagram appear">
+            <a class="figure__instagram-link" href="//www.instagram.com/langehair/" aria-label="L'ange Hair on Instagram"><img
+                class="figure__img figure__image--our-community" src="{{ 'instafive.jpg' | asset_img_url: 'grande' }}"
+                alt="Media from Instagram"></a>
+          </figure>
+        </div>
+        <div class="grid__instagram__cell-six">
+          <figure class="figure__instagram appear">
+            <a class="figure__instagram-link" href="//www.instagram.com/langehair/" aria-label="L'ange Hair on Instagram"><img
+                class="figure__img figure__image--our-community" src="{{ 'instasix.jpg' | asset_img_url: 'grande' }}"
+                alt="Media from Instagram"></a>
+          </figure>
+        </div>
+        <div class="grid__instagram__cell-seven">
+          <figure class="figure__instagram appear">
+            <a class="figure__instagram-link" href="//www.instagram.com/langehair/" aria-label="L'ange Hair on Instagram"><img
+                class="figure__img figure__image--our-community" src="{{ 'instaone.jpg' | asset_img_url: 'grande' }}"
+                alt="Media from Instagram"></a>
+          </figure>
+        </div>
+        <div class="grid__instagram__cell-eight">
+          <figure class="figure__instagram appear">
+            <a class="figure__instagram-link" href="//www.instagram.com/langehair/" aria-label="L'ange Hair on Instagram"><img
+                class="figure__img figure__image--our-community" src="{{ 'instatwo.jpg' | asset_img_url: 'grande' }}"
+                alt="Media from Instagram"></a>
+          </figure>
+        </div>
+        <div class="grid__instagram__cell-nine">
+          <figure class="figure__instagram appear">
+            <a class="figure__instagram-link" href="//www.instagram.com/langehair/" aria-label="L'ange Hair on Instagram"><img
+                class="figure__img figure__image--our-community" src="{{ 'instathree.jpg' | asset_img_url: 'grande' }}"
+                alt="Media from Instagram"></a>
+          </figure>
+        </div>
+        <div class="grid__instagram__cell-ten">
+          <figure class="figure__instagram appear">
+            <a class="figure__instagram-link" href="//www.instagram.com/langehair/" aria-label="L'ange Hair on Instagram"><img
+                class="figure__img figure__image--our-community" src="{{ 'instafour.jpg' | asset_img_url: 'grande' }}"
+                alt="Media from Instagram"></a>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function openPage(pageName, elmnt) {
+      var i, section, tablinks;
+      section = document.getElementsByClassName('section');
+      tablinks = document.getElementsByClassName('tablink');
+      for (i = 0; i < section.length; i++) {
+        section[i].style.display = 'none';
+      }
+
+      document.getElementById(pageName).style.display = 'block';
+    }
+    // Get the element with id='defaultOpen' and click on it
+    document.getElementById('defaultOpen').click();
+  </script>
+  <script>
+    $('.tablink').click(function () {
+      $('.current').removeClass('current');
+      $(this).addClass('current');
+    });
+  </script>
+
+  <script>
+    $(document).on('scroll', function () {
+      var pageTop = $(document).scrollTop()
+      var pageBottom = pageTop + $(window).height()
+      var tags = $('.appear')
+
+      for (var i = 0; i < tags.length; i++) {
+        var tag = tags[i]
+
+        if ($(tag).position().top < pageBottom) {
+          $(tag).addClass('visible')
+        } else {
+          $(tag).removeClass('visible')
+        }
+      }
+    })
+  </script>
+</div>

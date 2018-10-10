@@ -1,0 +1,257 @@
+{% assign zp_use_favicon = false %}{% assign zp_use_meta_tags = false %}{% assign zp_use_open_graph_tags = false %}<!doctype html>
+<!--[if lt IE 7]><html class="no-js ie6 oldie" lang="en"><![endif]-->
+<!--[if IE 7]><html class="no-js ie7 oldie" lang="en"><![endif]-->
+<!--[if IE 8]><html class="no-js ie8 oldie" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--><html lang="en"><!--<![endif]-->
+<head>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-NNQFN3');</script>
+  <!-- End Google Tag Manager -->
+  
+  <!-- v2.1.6 -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=9;IE=10;IE=Edge,chrome=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="keywords" content="{{ "general.meta.keywords" | t }}" />
+  <meta name="author" content="{{ "general.meta.author" | t }}">
+  <!-- Social meta ================================================== -->
+  {% include 'social-meta-tags' %}
+
+  <title>{{ page_title }}{% if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif %}{% if current_page != 1 %} &ndash; Page {{ current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}</title>
+  {% if page_description %}<meta name="description" content="{{ page_description | escape }}" />{% endif %}
+  <link rel="canonical" href="{{ canonical_url }}" />
+  
+  {% if settings.use_favicon %}<link rel="shortcut icon" href="{{ 'favicon.png' | asset_url }}" type="image/x-icon" />{% endif %}
+  
+  <script>
+  (function () {
+    if ( typeof NodeList.prototype.forEach === "function" ) return false;
+    NodeList.prototype.forEach = Array.prototype.forEach;
+  })();
+  if (!String.prototype.startsWith) {
+      String.prototype.startsWith = function(searchString, position){
+        position = position || 0;
+        return this.substr(position, searchString.length) === searchString;
+    };
+  }
+  </script>
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var windowWidth = window.innerWidth;
+    if (typeof windowWidth !== 'number') { windowWidth = 1000; }
+    var size;
+    if (windowWidth > 768) { size = 'window-size-desktop'; }
+    if (windowWidth > 414 && windowWidth <= 768) { size = 'window-size-tablet'; }
+    if (windowWidth <= 414) { size = 'window-size-mobile'; }
+    document.body.classList.add(size);
+  });
+  </script>
+  
+  {% if settings.enable_custom_fonts %}
+  	{{ 'fonts.js' | asset_url | script_tag }}
+  {% else %}
+  	{% include "header-fonts" %}
+  {% endif %}
+  
+  {% include 'header-css' %}
+
+  {{ 'vendor.js' | asset_url | script_tag }}
+
+  {{ 'jquery.cookie.js' | asset_url | script_tag }}
+  {% if template contains 'customers' %}
+  {{ 'shopify_common.js' | shopify_asset_url | script_tag }}
+  {{ 'customer_area.js'  | shopify_asset_url | script_tag }}
+  {% endif %}
+  
+  {% comment %}{{ content_for_header }}{% endcomment %}{% capture zp_include_html %}{% include 'header-scripts.zipifypages' %}{% endcapture %}{% unless zp_include_html contains 'Liquid error: Could not find asset snippets/header-scripts.zipifypages.liquid' or zp_include_html contains 'Liquid error: Could not find asset snippets/page-content-parser.zipifypages.liquid' %}{{ zp_include_html | strip }}{% assign zp_include_html = '' %}{% endunless %}
+
+  {{ 'option_selection.js' | shopify_asset_url | script_tag }}
+  {{ 'api.jquery.js' | shopify_asset_url | script_tag }}
+  {{ 'cart.api.js' | asset_url | script_tag }}
+  {{ 'ib-localstorage.js' | asset_url | script_tag }}
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var queryString = window.location.search;
+      if (queryString) {
+        ibLocalStore.queryString = queryString;
+        var queries = queryString.replace('?', '').split('&');
+        queries.filter(function (i) { return /coupon/i.test(i) && /=/.test(i); })
+        .forEach(function (i) {
+          var code = i.split('=')[1];
+          Shopify['couponCode'] = code;
+          ibLocalStore.coupon = code;
+        });
+      } else {
+        if (ibLocalStore.coupon) {
+          Shopify['couponCode'] = ibLocalStore.coupon;
+        }
+      }
+    });
+  </script>
+  
+  <script type="text/javascript">
+  (function e(){var e=document.createElement("script");e.type="text/javascript",e.async=true,e.src="//staticw2.yotpo.com/Jsh0v0rgB6jJ7DINWNqDFudN3HRrlx0cdayLxlC3/widget.js";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)})();
+  </script>
+
+  {% capture l9 %}{% if template == "index" and settings.home_page_layout == 'home-page_layout-9' %} id="layout-9"{% elsif template == "page.home-page_layout-9" %} id="layout-9"{% endif %}{% endcapture %}
+  
+  <style>
+    /*Footer*/
+    {% if settings.color_body != settings.color_footer and settings.color_footer != 'rgba(0,0,0,0)' %}
+    footer {
+      padding-top: 60px;
+    }
+    @media (max-width: 767px) {
+      footer {
+        padding-top: 0;
+      }
+    }
+    body:not(.index) #pageContent > .container {
+      border: none;
+      padding-bottom: 0;
+    }
+    footer .subscribe-box input {
+      border: none !important;
+    }
+    {% else %}
+    {% if settings.color_carticon == settings.color_stucknavigation %}
+    @media (min-width: 1024px) {
+      .fixedbar .cart .dropdown > a .icon {
+        color: {{ settings.color_stucknavigationtext }} !important;
+      }
+      .fixedbar .cart .dropdown > a:hover .icon {
+        color: {{ settings.color_stucknavigationtextactive }} !important;
+      }
+    }
+    {% endif %}
+    {% unless settings.show_top_line == false and settings.footer_design == 'footer_design4' %}
+    body.index .layout-4 .container:first-child,{% endunless %}
+    body.index .layout-0 .container:first-child {
+      border-top: 1px solid {{ settings.color_footerlines }};
+      padding-top: 60px;
+    }
+    footer .subscribe-box input {
+      border: 1px solid {{ settings.color_footerlines }};
+    }
+    {% endif %}
+    
+    #fitImageInTheme .product__inside__image {
+      overflow: hidden;
+    }
+    #fitImageInTheme .product__inside__image > a:first-child {
+      display: flex;
+      height: {{ settings.product_scale_height }}px;
+      align-items: center;
+    }
+    #fitImageInTheme .product__inside__image > a:first-child img {
+      width: 100%;
+    }
+    {% unless settings.showfixedbar %}.fixedbar {
+      display:none !important;
+    }{% endunless %}
+    {% unless settings.show_preloader %}
+    .breadcrumbs,
+    #pageContent {
+      visibility:hidden;
+      -webkit-transition: opacity .4s ease-out;
+      -moz-transition: opacity .4s ease-out;
+      -o-transition: opacity .4s ease-out;
+      transition: opacity .4s ease-out;
+      opacity: 0; 
+    }
+    .breadcrumbs.show,
+    #pageContent.show {
+      opacity: 1;
+      visibility: visible;
+    }{% endunless %}
+    {% if settings.transparent_header and template == "index" %}
+    body {
+      background: {{ settings.headertransparentbgcolor }};
+    }
+    {% endif %}
+    {% if settings.hide_title_underline %}
+    .another-title .title-under{
+      font-size: 24px;
+      letter-spacing: 0;
+      margin-bottom: 1.667em !important;
+    }
+    .another-title .title-under:after{
+      display: none !important;       
+    }
+    .another-title .title-with-button {
+      overflow: inherit;
+    }
+    .carousel-products__button {
+      top: -14px;
+    }
+    {% endif %}
+  </style>
+</head>
+
+<body{% if template == "index" or template contains "page.home-page_layout" or settings.hide_title_underline %} class="another-title index{% if template == "index" and settings.home_page_layout == 'home-page_layout-2' %} indexlayout2{% endif %}"{% endif %}{{ l9 }}{% if settings.use_scale_product_image %} id="fitImageInTheme"{% endif %}>
+  {% if settings.show_helper and template == "index" %}{% section "show-helper" %}{% endif %}
+  
+  {% capture headerlogo %}{% if settings.transparent_header and template == "index" %}{{ "logotransparent.png" | asset_url }}{% else %}{{ "logo.png" | asset_url }}{% endif %}{% endcapture %}
+  
+  {% include 'preloader-main' %}
+  
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NNQFN3"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  
+  <!-- Back to top -->
+  <div class="back-to-top"><span class="icon-keyboard_arrow_up"></span></div>
+  <!-- /Back to top -->
+  {% include "main-menu-mobile" %}
+
+  {% if template == "index" and settings.home_page_layout == 'home-page_layout-2' %}
+  	{% include "home-page_layout-2" %}
+  {% else %}
+  	<div class="header-wrapper{% if settings.transparent_header and template == "index" %} transparent transform-mobile{% endif %}">{% include settings.header_design %}</div>
+
+    {% if template != "index" %}{% unless template contains "page.home-page_layout" %}{% comment %}{% include "breadcrumb" %}{% endcomment %}{% endunless %}{% endif %}
+
+    <div id="pageContent" class="starthide{% if template == "index" and settings.transparent_footer %} nopadding{% endif %}">
+      {% comment %}{{ content_for_layout }}{% endcomment %}{% capture zp_include_html %}{% include 'article-content.zipifypages' %}{% endcapture %}{% if zp_include_html contains 'Liquid error: Could not find asset snippets/article-content.zipifypages.liquid' %}{{ article.content | strip }}{% else %}{{ zp_include_html | strip }}{% endif %}{% assign zp_include_html =  %}
+    </div>
+
+  	{% if template == "index" and settings.transparent_footer %}{% include "footer-fixed" %}
+  	{% else %}{% include settings.footer_design %}
+  	{% endif %}
+
+    {% include 'popup_cart' %}
+    {% include 'popup-newsletter' %}
+    {% include 'popup-quickview' %}
+
+    {% include 'preloader-ajax' %}
+  {% endif %}
+
+  <div class="cart_messages" style="display:none">
+    <div class="edit">{{ 'cart.header.button_edit' | t }}</div>
+    <div class="delete">{{ 'cart.header.button_delete' | t }}</div>
+    <div class="price">{{ 'cart.header.price' | t }}</div>
+    <div class="qty">{{ 'cart.header.quantity' | t }}</div>
+  </div>
+  <div class="button_massage" style="display:none">{{ 'products.product.add_to_cart_html' | t }}</div>
+
+  {% include 'header-js' %}
+  {% include 'currencies' %}
+  {% include 'search-autocomplete' %}
+  
+  {% if settings.show_helper and template == "index" %}
+    <script>
+      var adminlinks = '{{ settings.helper_info }}';
+    </script>
+    {{ 'admin-panel.js' | asset_url | script_tag }}
+  {% endif %}
+  
+{% capture zp_include_html %}{% include 'page-footer.zipifypages' %}{% endcapture %}{% unless zp_include_html contains 'Liquid error: Could not find asset snippets/page-footer.zipifypages.liquid' %}{{ zp_include_html | strip }}{% assign zp_include_html = '' %}{% endunless %}</body>
+</html>
+{% layout none %}

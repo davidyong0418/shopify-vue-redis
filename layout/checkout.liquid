@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="{{ locale }}" dir="{{ direction }}" class="{{ checkout_html_classes }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=9;IE=10;IE=Edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, user-scalable=0">
+    <meta name="referrer" content="origin">
+
+    <title>{{ page_title }}</title>
+    <script>
+      {% assign discount_amount = 0 %}
+      {% assign contains_alcohol = false %}
+      {% assign backorder = false %}
+      {% capture product_list %}
+        {% for item in checkout.line_items %}
+          {% if item.product.type == 'discount' %}
+            {% assign abandoned_discount = true %}
+            {% if item.sku == 'AC-1' %}
+              {% assign discount_amount = 5 %}
+            {% endif %}
+            {% if item.sku == 'AC-2' %}
+              {% assign discount_amount = 10 %}
+            {% endif %}
+          {% else %}{
+              "variant_id": "{{ item.variant_id }}",
+              "product_id": "{{ item.product_id }}",
+              "fb_id": "shopify_{{ item.product_id }}_{{ item.variant_id }}",
+              "sku": "{{ item.sku }}",
+              "image": "{{ item.image | img_url: 'xsmall' }}",
+              "qty": {{ item.quantity }},
+              "title": "{{ item.title }}",
+              "original_line_price": {% if item.original_line_price > item.line_price %}{{ item.original_line_price | times: 0.01 }}{% else %}null{% endif %},
+              "price": {{ item.line_price | times: 0.01 }},
+              "backorder": {% if item.variant.metafields.product.backorder or item.product.metafields.product.backorder %}{% assign backorder = true %}"{% if item.variant.metafields.product.backorder %}{{ item.variant.metafields.product.backorder }}{% endif %}{% if item.product.metafields.product.backorder %}{{ item.product.metafields.product.backorder }}{% endif %}"{% else %}null{% endif %},
+              "contains_alcohol": {% if item.product.tags contains "Contains Alcohol" %}{% assign contains_alcohol = true %}"This item will be shipped ground"{% else %}null{% endif %},
+              "message": {% if item.message %}"{{ item.message }}"{% else %}null{% endif %},
+              "available": {{ item.variant.available }}
+            }|end_item|{% endif %}
+        {% endfor %}
+      {% endcapture %}
+      {% assign products = product_list | split: '|end_item|' | reverse %}
+      window.cartItemsSize = {{ products | size }};
+      window.cartItems = [
+        {% for item in products %}
+          {% unless forloop.first %}{{ item }}{% unless forloop.last %},{% endunless %}{% endunless %}
+        {% endfor %}
+      ];
+      window.abandonedCartDiscount = {% if abandoned_discount == true %}true{% else %}false{% endif %};
+      window.abandonedDiscountPercentage = {{ discount_amount }};
+      window.hazmatOrderWarning = {% if contains_alcohol == true %}true{% else %}false{% endif %};
+      window.backorderWarning = {% if backorder == true %}true{% else %}false{% endif %};
+      window.customerFirstName = {% if checkout.customer %}'{{ checkout.customer.first_name }}'{% elsif checkout.shipping_address.first_name %}'{{ checkout.shipping_address.first_name }}'{% else %}null{% endif %};
+      window.discounts = [{% for discount in checkout.discounts %}'{{ discount.code }}',{% endfor %}];
+      window.isLoggedIn = {% if checkout.customer %}true{% else %}false{% endif %};
+      window.checkoutId = {{ checkout.id }};
+    </script>
+    
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NNQFN3');</script>
+    <!-- End Google Tag Manager -->
+    
+    <!-- Begin Outbrain --> 
+    
+    <script data-obct type="text/javascript">
+      /** DO NOT MODIFY THIS CODE**/
+      !function(_window, _document) {
+        var OB_ADV_ID='008f36b0f004c0e20123624b9db920f397';
+        if (_window.obApi) {var toArray = function(object) {return Object.prototype.toString.call(object) === '[object Array]' ? object : [object];};_window.obApi.marketerId = toArray(_window.obApi.marketerId).concat(toArray(OB_ADV_ID));return;}
+        var api = _window.obApi = function() {api.dispatch ? api.dispatch.apply(api, arguments) : api.queue.push(arguments);};api.version = '1.1';api.loaded = true;api.marketerId = OB_ADV_ID;api.queue = [];var tag = _document.createElement('script');tag.async = true;tag.src = '//amplify.outbrain.com/cp/obtp.js';tag.type = 'text/javascript';var script = _document.getElementsByTagName('script')[0];script.parentNode.insertBefore(tag, script);}(window, document);
+    obApi('track', 'PAGE_VIEW');
+    </script>
+
+    <!-- End Outbrain -->
+
+    {% include 'fb-pixel' %}
+
+    {{ content_for_header }}
+
+    {{ checkout_stylesheets }}
+    {{ checkout_scripts }}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Condensed" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="{{ 'smartmodal.css' | asset_url }}" rel="stylesheet">
+  
+  {% include 'shogun-head' %}
+</head>
+  <body>
+    {{skip_to_content_link}}
+    <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    dataLayer.push({
+    'event' : 'transactionComplete',
+    'transactionId': '{{ checkout.order_id }}',
+    'transactionOrderNumber': '{{ checkout.order_number }}',
+    'transactionTotal': '{{checkout.total_price | money_without_currency }}',
+    'transactionTotalMinusShipping': '{{ checkout.total_price | minus: checkout.shipping_price | money_without_currency }}',
+    'transactionTax': '{{ checkout.tax_price | money_without_currency }}',
+    'transactionShipping': '{{ checkout.shipping_price | money_without_currency }}',
+    'transactionSubtotal': '{{ checkout.subtotal_price | money_without_currency }}',
+    'transactionProducts': [
+    {% for line_item in checkout.line_items %}
+    {
+      'sku': '{{line_item.sku}}',
+      'name': '{{line_item.title}}',
+      'category': '{{line_item.type}}',
+      'price': {{line_item.line_price | times: 0.01}},
+      'quantity': {{line_item.quantity}}
+    },
+    {% endfor %}]
+    });
+    </script>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NNQFN3"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    
+    <div class="checkout-header">
+      <div class="checkout-header__logo">{{ content_for_logo }}</div>
+      <div class="checkout-header__breadcrumb">{{ breadcrumb }}</div>
+      <div class="checkout-header__alt-payment-methods" id="altPayMethods">
+        {{ alternative_payment_methods }}
+      </div>
+    </div>
+    
+    {% if message %}
+      <div class="message">{{ message }}</div>
+    {% endif %}
+    <div class="checkout-content">
+      <div id="order-summary"></div>
+      <div class="forms-wrapper">
+        <div class="forms">
+          {{ content_for_layout }}
+        </div>
+        <div class="footer">{{ content_for_footer }}</div>
+        <img src="{{ 'LANGE-SecureCheckout-R3.jpg' | asset_img_url: '800x' }}" style="width:100%;margin:0 auto;max-width:350px;" alt="Guaranteed Safe Checkout" />
+      </div>
+      {{ content_for_order_summary }}
+    </div>
+    
+    {{ tracking_code }}
+
+	<!-- vue code start -->
+    <script src="{{ 'vuecart.js' | asset_url }}"></script>
+    <!-- vue code end -->
+    <!-- checkout scripts start -->
+    <script src="{{ 'checkout-scripts.js' | asset_url }}"></script>
+    <!-- checkout scripts end -->
+    <!-- vue code start -->
+    <script>
+      jQuery(document).ready(function () {
+        var checkoutPage = 0;
+        document.querySelectorAll('h2').forEach(function (i) {
+          if (i.innerText.toUpperCase().trim() === 'CUSTOMER INFORMATION') {
+            checkoutPage = 1;
+          }
+          if (i.innerText.toUpperCase().trim() === 'CONTACT INFORMATION') {
+            checkoutPage = 1;
+          }
+          if (i.innerText.toUpperCase().trim() === 'SHIPPING METHOD') {
+            checkoutPage = 2;
+          }
+          if (i.innerText.toUpperCase().trim() === 'PAYMENT METHOD') {
+            checkoutPage = 3;
+          }
+          if (i.innerText.toUpperCase().trim() === 'INVENTORY ISSUES') {
+            checkoutPage = 4;
+          }
+        });
+      });
+    </script>
+	{% include 'backorder-modal' %}
+    <script src="//d79i1fxsrar4t.cloudfront.net/jquery.liveaddress/5.1/jquery.liveaddress.min.js"></script>
+    <script>
+      var liveaddress = $.LiveAddress({
+        key: '9099087420872635',
+        debug: false,
+        target: 'US',
+        enforceVerification: false,
+        autocomplete : 0,
+        autoVerify: false,
+        addresses: [{
+          address1: '#checkout_shipping_address_address1',
+          address2: '#checkout_shipping_address_address2',
+          locality: '#checkout_shipping_address_city',
+          administrative_area: '#checkout_shipping_address_province',
+          postal_code: '#checkout_shipping_address_zip',
+          country: '#checkout_shipping_address_country',
+        }]
+      });
+    </script>
+    {% include 'sweettooth-initializer' %}
+    {% include 'sweettooth-points-slider' %}
+  </body>
+</html>

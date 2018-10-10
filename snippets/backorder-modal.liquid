@@ -1,0 +1,64 @@
+	<script src="{{ 'smartmodal.js' | asset_url }}"></script>
+    <div class="smartmodal auto once" id="shipping-notice-modal" data-expires="7" style="max-width:400px; display:none;">
+      <b>BACKORDER NOTICE</b>
+      <br><br>
+      <!-- start line to be changed -->
+      Please note: Your order will ship when all products become available.
+      <!-- end line to be changed -->
+      <br><br>
+      The following items are currently on backorder:
+      <div class="backorder-items-modal"></div>
+      <a href="#" class="close" style="display: block; background: #000; color: #FFF; width: 150px; text-align: center; padding: 6px; margin: 15px auto 0 auto;">I UNDERSTAND</a>
+    </div>
+    <script>
+      jQuery(document).ready(function () {
+        var checkoutPage = 0;
+        var isBackorder = false;
+        var backorderItems = new Array();
+        document.querySelectorAll('h2').forEach(function (i) {
+          if (i.innerText.toUpperCase().trim() === 'CUSTOMER INFORMATION') {
+            checkoutPage = 1;
+          }
+          if (i.innerText.toUpperCase().trim() === 'CONTACT INFORMATION') {
+            checkoutPage = 1;
+          }
+          if (i.innerText.toUpperCase().trim() === 'SHIPPING METHOD') {
+            checkoutPage = 2;
+          }
+          if (i.innerText.toUpperCase().trim() === 'PAYMENT METHOD') {
+            checkoutPage = 3;
+          }
+          if (i.innerText.toUpperCase().trim() === 'INVENTORY ISSUES') {
+            checkoutPage = 4;
+          }
+        });
+        window.cartItems.forEach(function(item) {
+          if (item.backorder) {
+            isBackorder = true;
+            backorderItems.push(item);
+          }
+        });
+        if (checkoutPage === 1) {
+          //reset the modal if they're on step 1... just in case
+          window.localStorage.removeItem('smartModal-shipping-notice-modal');
+        }
+        if (checkoutPage === 3 && isBackorder) {
+          console.log('fire modal');
+          
+          backorderItems.forEach(function(item){
+            var title = item.title;
+            var shipdate = item.backorder;
+            shipdate = shipdate.substring(shipdate.lastIndexOf(", ") + 1);
+            var img = item.image;
+            var itemHTML = '<div class="item"><div class="item__top"><img src="' + img + '" alt=' + title + '" class="product-thumbnail"><span class="title">' + title + '<div class="warning warning-backorder">(' + shipdate.trim() + ')</div></div></div>'
+            jQuery('#shipping-notice-modal .backorder-items-modal').append(itemHTML);
+          });
+          
+          jQuery.smartModal({
+            clickClose: false,
+            cookieExpires: 1,
+            debug: true,
+          });
+        }
+      });
+    </script>

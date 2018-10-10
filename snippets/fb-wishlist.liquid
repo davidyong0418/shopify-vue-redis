@@ -1,0 +1,17 @@
+<script>
+  jQuery('.shg-btn ').click(function(){
+    var category = (window.location.pathname).split('/')[2];
+    var wishListHandle = jQuery(this).attr('href').split('/')[4];
+    jQuery.getJSON('/products/' + wishListHandle + '.js', function(product) {
+      var skus = product.variants.map(function(variant) { return variant.sku });
+      fbAddToWishlist(
+        product.price / 100,
+        product.compare_at_price / 100,
+        product.id,
+        skus,
+        category,
+        product.title,
+      );
+    });
+  });
+</script>

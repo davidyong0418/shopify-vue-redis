@@ -1,0 +1,44 @@
+<nav role="navigation">
+  <div id="menuToggle">
+    <input type="checkbox" />
+    <span class="hamburger"></span> 
+    <span class="hamburger"></span> 
+    <span class="hamburger"></span>
+  </div>
+</nav>
+
+<script>
+$(document).ready(function() {
+  $('#menuToggle').click(function (e) {
+  	$('#menu').addClass('open');
+  });
+  if($('#menu').length > 0) {
+    function close_accordion_section() {
+      $('#menu h2.menu-title i.fa').removeClass('fa-minus').addClass('fa-plus');
+      $('#menu ul.open').slideUp(300).removeClass('open').addClass('closed');
+    }
+
+    $('#menu ul.closed').slideUp(300);
+    
+    $('#menu h2.menu-title').click(function(e) {
+      e.preventDefault();
+      
+      var openItem = false;
+      if(!$(this).next().hasClass('open')) {
+        openItem = true;
+      }
+
+      close_accordion_section();
+
+      if(openItem) {
+        var currentAccordionItem = $(this);
+        
+        window.setTimeout(function() {
+          $(currentAccordionItem).next().removeClass('closed').slideDown(300).addClass('open');
+          $(currentAccordionItem).children().removeClass('fa-plus').addClass('fa-minus');
+        }, 300);
+      }
+    });
+  }
+});
+</script>

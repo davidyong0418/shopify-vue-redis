@@ -1,0 +1,11 @@
+<script>
+  jQuery("a:contains('Continue Shopping')").click(function(e) {
+    e.stopPropagation();
+    fbCustomContinue('header');
+  });
+  jQuery("a:contains('Checkout')").click(function(e) {
+    e.stopPropagation();
+    fbCustomCheckout('header');
+    jQuery(this).unbind(e);
+  });
+</script>

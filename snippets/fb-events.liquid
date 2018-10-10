@@ -1,0 +1,164 @@
+<script>
+  var fbViewContent = function(msrp, sku, id, category, product, contentType) {
+    var fbData = {
+      value: msrp,
+      currency: 'USD',
+      content_category: category,
+      content_name: product,
+      content_ids: [id],
+      content_sku: sku,
+      content_type: contentType,
+    };          
+     fbq('track', 'ViewContent', {
+       value: msrp,
+       currency: 'USD',
+       content_category: category,
+       content_name: product,
+       content_ids: [id],
+       content_sku: sku,
+       content_type: contentType,
+     });
+    console.log('fbViewContent fired: ', fbData);
+  };
+  
+  var fbAddToCart = function(msrp, sku, id, category, title, location) {
+    var fbData = {
+      value: msrp,
+      currency: 'USD',
+      content_name: title,
+      content_category: category,
+      content_type: 'product',
+      content_ids: [id],
+      content_sku: sku,
+      num_items: 1,
+      location: location,
+    };
+     fbq('track', 'AddToCart', {
+       value: msrp,
+       currency: 'USD',
+       content_name: title,
+       content_category: category,
+       content_type: 'product',
+       content_ids: [id],
+       content_sku: sku,
+       num_items: 1,
+       location: location,
+     });
+    console.log('fbAddToCart fired: ', fbData);
+  };
+
+  var fbAddToWishlist = function(discountPrice, msrp, id, sku, category, title) {
+    var fbData = {
+      value: discountPrice,
+      msrp: msrp,
+      discount_value: Math.round(100 - (discountPrice / msrp * 100)),
+      currency: 'USD',
+      content_name: title,
+      content_category: category,
+      content_ids: [id],
+      content_sku: sku,
+      content_type: 'product_group',
+      num_items: 1
+    };
+     fbq('track', 'AddToWishlist', {
+       value: discountPrice,
+       msrp: msrp,
+       discount_value: Math.round(100 - (discountPrice / msrp * 100)),
+       currency: 'USD',
+       content_name: title,
+       content_category: category,
+       content_ids: [id],
+       content_sku: sku,
+       content_type: 'product_group',
+       num_items: 1
+     });
+    console.log('fbAddToWishlist fired: ', JSON.stringify(fbData, null, 2));
+  };
+
+  var fbInitiateCheckout = function(grandTotal, skus) {
+     fbq('track', 'InitiateCheckout', {
+       value: grandTotal,
+       currency: 'USD',
+       content_name: '',
+       content_category: '',
+       content_type: 'product_group',
+       content_ids: skus,
+       num_items: '',
+     });
+    console.log('fbInitiateCheckout fired');
+  };
+
+  var fbAddPaymentInfo = function(grandTotal, skus) {
+    fbq('track', 'AddPaymentInfo', {
+      value: grandTotal,
+      currency: 'USD',
+      content_category: '',
+      content_ids: skus,
+      contents: '',
+    });
+  };
+
+  var fbCompleteRegistration = function(grandTotal) {
+    fbq('track', 'CompleteRegistration', {
+      value: grandTotal,
+      currency: 'USD',
+      content_name: '',
+      status: '',
+    });
+    console.log('fbCompleteRegistration fired');
+  };
+
+  var fbPurchase = function(orderNumber, grandTotal, lineItems, itemQty) {
+    var fbData = {
+      value: grandTotal,
+      currency: 'USD',
+      content_name: orderNumber,
+      content_type: '',
+      content_ids: '',
+      contents: lineItems,
+      num_items: itemQty,
+    };
+    fbq('track', 'Purchase', {
+      value: grandTotal,
+      currency: 'USD',
+      content_name: '',
+      content_type: 'product_group',
+      contents: lineItems,
+      num_items: itemQty,
+      order_number: orderNumber,
+    });
+    console.log('fbPurchase fired', fbData);
+  };
+
+  var fbLead = function(rating, product, category) {
+    var fbData = {
+      value: 1,
+      currency: 'USD',
+      content_name: product,
+      content_category: category,
+   	};
+    if (rating >= 4) {
+      fbq('trackCustom', 'Lead', {
+        value: 1,
+        currency: 'USD',
+        content_name: product,
+        content_category: category,
+   	  });
+      console.log('fbLead fired: ', fbData);
+    }
+  };
+  
+  var fbCustomCheckout = function(location){
+    fbq('trackCustom', 'ClickCheckout', {
+      buttonLocation: location,
+    });
+    console.log('fbCustomCheckout fired: ', location);
+  };
+
+  var fbCustomContinue = function(location){
+    fbq('trackCustom', 'ClickContinue', {
+      buttonLocation: location,
+    });
+    console.log('fbCustomContinue fired: ', location);
+  };
+</script>

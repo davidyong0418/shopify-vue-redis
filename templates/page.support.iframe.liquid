@@ -1,0 +1,35 @@
+{% include 'shogun-products', content: page %}
+<div class="container">
+  <div class="all-cat-support">
+    <a href="javascript:" id="all-cat-support">All Categories</a>
+  </div>
+  {{ page.content }}
+  {% include 'fb-wishlist' %}
+</div>
+<script>
+  function resizeIframe(obj) {
+    //obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+  }
+  $(window).resize(function() {
+    resizeIframe(document.getElementById('support-frame'));
+  });
+  window.addEventListener("message", receiveSupportMessage, false);
+
+  function receiveSupportMessage(event) {
+    if (event.origin !== "https://support.langehair.com") {
+      return;
+    }
+    document.getElementById('support-frame').style.height = event.data + 'px';
+  }
+  $('#all-cat-support').click(function() {
+    document.getElementById('support-frame').src += '';
+  });
+
+</script><style type="text/css">
+.all-cat-support {
+  display:none;
+}
+#support-frame {
+  width:100%;
+}
+</style>

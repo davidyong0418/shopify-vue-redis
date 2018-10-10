@@ -1,0 +1,166 @@
+  <ul class="mobile-menu-links">
+  	 {% for block in section.blocks %}
+            <li id="mobile-menu-link-{{ block.id }}">
+              <a{% if block.settings.link %} href="{{ block.settings.link }}"{% endif %}>
+              	<div class="mobile-menu-link-title">
+                  <div class="mobile-menu-link-inner">
+                    {{ block.settings.title }}
+                    {% unless block.settings.link %}<div class="mobile-menu-no-link">(Coming Soon!)</div>{% endunless %}
+                  </div>
+                </div>
+              </a>
+              
+              
+            </li>
+      {% endfor %}
+  </ul>
+<style type="text/css">
+{% for block in section.blocks %}
+#mobile-menu-link-{{ block.id }} {
+	background-color: {{ block.settings.bg_color }};
+}
+{% endfor %}
+{% for block in section.blocks %}
+  	{% if block.settings.image %}
+	#mobile-menu-link-{{ block.id }}::before {
+      	display:block;
+      	content:'';
+      	position:absolute;
+      	left:0;
+      	top:0;
+      	width:100%;
+      	height:100%;
+      	background-repeat: no-repeat;
+      	background-position: right top;
+      	background-size: auto 100%;
+	}{% endif %}
+{% endfor %}
+@media (min-width:601px) {
+   {% for block in section.blocks %}
+  	{% if block.settings.image %}
+	#mobile-menu-link-{{ block.id }}::before {
+  		background-image: url({{ block.settings.image | img_url : '' }});
+	}{% endif %}
+{% endfor %}
+}
+@media (max-width:600px) {
+   {% for block in section.blocks %}
+	{% if block.settings.image %}
+  	#mobile-menu-link-{{ block.id }}::before {
+  		background-image: url({{ block.settings.image | img_url : 'grande' }});
+	}{% endif %}
+{% endfor %}
+}
+</style>
+{% schema %}
+  {
+    "name": "Mobile Menu Links",
+    "max_blocks": 15,
+    "blocks": [
+      {
+        "type": "link",
+        "name": "Link",
+        "settings": [
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link to Page"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Background Image"
+          },
+          {
+            "type": "color",
+            "id": "bg_color",
+            "label": "Background Color",
+			"default" : "#f3f3f3"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+#menu ul.mobile-menu-links {
+    margin:0;
+}
+#menu ul.mobile-menu-links li {
+    margin: 0;
+	position:relative;
+	padding:0;
+}
+#menu ul.mobile-menu-links li::before {
+	transition:opacity .3s;
+}
+#menu ul.mobile-menu-links li:hover::before {
+	opacity: .5;
+}
+#menu ul.mobile-menu-links li a { position:relative; }
+#menu ul .mobile-menu-link-title {
+    display:table;
+    width:100%;
+    height:13vw;
+}
+#menu ul .mobile-menu-link-title .mobile-menu-link-inner {
+    font-size: 3.5vw;
+    margin: 0;
+    text-transform: uppercase;
+    font-weight: 400;
+    color: #000;
+    padding: 10px 20px;
+    display:table-cell;
+    width:100%;
+    height:100%;
+    vertical-align:middle;
+    line-height:1em;
+	position:relative;
+	left:0;
+	transition:left .3s;
+}
+#menu ul.mobile-menu-links li:hover .mobile-menu-link-inner {
+    left: 10px;
+}
+/*#menu ul .mobile-menu-link-title .mobile-menu-link-inner::after {
+    content: ' >';
+    display:inline-block;
+    padding-left:.25em;
+}*/
+@media (max-width:768px) {
+  #menu ul .mobile-menu-link-title { height:19vw; }
+  #menu ul .mobile-menu-link-title .mobile-menu-link-inner { font-size: 4vw; }
+}
+@media (max-width:630px) {
+	#menu ul .mobile-menu-link-title .mobile-menu-link-inner { padding-right:44%; }
+}
+@media (max-width:580px) {
+	#menu ul .mobile-menu-link-title .mobile-menu-link-inner { padding-right:40%; }
+}
+@media (max-width:480px) {
+	#menu ul .mobile-menu-link-title .mobile-menu-link-inner {
+      font-size: 5vw;
+  }
+}
+{% endstylesheet %}
+
+{% javascript %}
+var inputs = document.querySelectorAll("a[href='#subscribe']");
+for (i = 0;i < inputs.length;i++) {
+    inputs[i].addEventListener('click', function() {
+    window.location.hash = "";
+    if ( (" " + document.body.className + " ").replace(/[\n\t]/g, " ").indexOf(" noscroll ") > -1 ) {
+		document.getElementById('menuToggle').click();
+ 	}
+	window.setTimeout(function() {
+		document.getElementById('subscribeFirstName').focus();
+	},500);
+  });
+}
+{% endjavascript %}

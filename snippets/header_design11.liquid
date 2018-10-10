@@ -1,0 +1,136 @@
+<!-- <div class="ib-slogan" style="display:none">{{ settings.header_slogan }} <i class="fa fa-close close"></i></div> -->
+<header id="header" class="header-design11 header-6-links">
+  <div class="header-inner">
+    <div class="header__hamburger">
+      <div id="menuToggle">
+        <input type="checkbox" aria-label="Toggle Menu" />
+        <span class="hamburger"></span> 
+        <span class="hamburger"></span> 
+        <span class="hamburger"></span>
+      </div>
+    </div>
+    <div class="header__main-menu">
+      {% include "integrabeauty-main-menu" %}
+    </div>
+    <div class="header__icons">
+      {% include "integrabeauty-menu-customer" %}
+      {% include "integrabeauty-menu-cart" %}
+    </div>
+    <div class="header-middle header-m">
+      <div class="header-middle-logo">
+        <div class="header-middle-logo-wrapper">
+          <img src="{{ 'lange-emblem.png' | asset_url  }}" alt="L'ange Hair Emblem" class="header-middle-emblem-back" />
+          <img src="{{ 'lange-emblem-black.png' | asset_url  }}" alt="L'ange Hair Emblem" class="header-middle-emblem-front" />
+          <img src="{{ 'lange-title.png' | asset_url  }}" alt="L'ange" class="header-middle-title" />
+          <a href="/" aria-label="L'ange Hair Home"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+//   ;(function () {
+//     var slogan = document.querySelector('div.ib-slogan');
+//     if (ibLocalStore.showSlogan(slogan.textContent)) {
+//       slogan.style.display = 'block';
+//       var sloganClose = document.querySelector('div.ib-slogan .close');
+//       sloganClose.addEventListener('click', function () {
+//         slogan.style.display = 'none';
+//         ibLocalStore.sloganVisible = false;
+//       });
+//     }
+//   }());
+  </script>
+</header>
+<div id="menu" class="closed">
+  <a href="#" onclick="document.getElementById('manychat-button').click();" class="holiday-collection-button" style="color: #fff; background: #000;">$1,000 GIVEAWAY</a>
+  <div class="mobile-nav-shop-wrapper">
+    {% section 'mobile-menu-grid' %}
+  </div>
+  <div class-"mobile-menu-links-wrapper">
+    {% section 'mobile-menu-links' %}
+  </div>
+<!--   <a href="#" data-st-intent="st:core:home" class="holiday-collection-button" onclick="window.toggleMenu()">REWARDS PROGRAM</a> -->
+  <section class="submenu">
+    <h2 class="menu-title">Customer Care</h2>
+    <ul class="closed">
+    {% for link in linklists.footer-customer-service.links %}
+       <li class="mobile-header-link-{{link.title | handleize}}">{{ link.title | link_to: link.url }}</li>
+    {% endfor %}
+      <li></li>
+      <li></li>
+    </ul>
+  </section>
+  <section class="submenu">
+    <h2 class="menu-title">General Info</h2>
+    <ul class="closed">
+    {% for link in linklists.footer-general-information.links %}
+       <li class="mobile-header-link-{{link.title | handleize}}">{{ link.title | link_to: link.url }}</li>
+    {% endfor %}
+      <li></li>
+    </ul>
+  </section>
+  
+</div>
+<script>
+$(document).ready(function() {
+  document.querySelector('#menuToggle input').checked = false;
+  window.toggleMenu = function (e) {
+    //window.scroll(0, 0); 
+    var menuTimeout;
+    if ($('#menu').hasClass('closed')) {
+      document.querySelector('#menuToggle input').checked = true;
+      //$('#header').addClass('sticky');
+      $('#menu').removeClass('closed').addClass('open');
+      var menuTop = $('.header-top-bar-wrapper').innerHeight() - $(window).scrollTop() > 0 ? $('.header-top-bar-wrapper').innerHeight() - $(window).scrollTop() : 0;
+      $('#menu').css('top',menuTop);
+      menuTimeout = setTimeout(function() {
+        $('body').addClass('noscroll');
+      },500);
+    } else if ($('#menu').hasClass('open')) {
+      document.querySelector('#menuToggle input').checked = false;
+      $('body').removeClass('noscroll');
+      //$('#header').removeClass('sticky');
+      $('#menu').removeClass('open').addClass('closed');
+      menuTimeout = setTimeout(function() {
+        //menu fully closed
+      },500);
+    }
+  };
+  $('#menuToggle').click(window.toggleMenu);
+  if($('#menu').length > 0) {
+//     function close_accordion_section() {
+//       $('#menu h2.menu-title i.fa').removeClass('fa-minus').addClass('fa-plus');
+//       $('#menu ul.open').slideUp(300).removeClass('open').addClass('closed');
+//     }
+
+    $('#menu ul.closed').slideUp(0);
+    
+    $('#menu h2.menu-title').click(function(e) {
+      e.preventDefault();
+      var openItem = false;
+      if(!$(this).next().hasClass('open')) {
+        openItem = true;
+      }
+
+//       close_accordion_section();
+
+      if(openItem) {
+        var currentAccordionItem = $(this);
+        $('#menu ul.open').slideUp(300).removeClass('open').addClass('closed');
+        $('#menu h2.menu-title.open').removeClass('open');
+        $(this).addClass('open');
+        window.setTimeout(function() {
+          $(currentAccordionItem).next().removeClass('closed').slideDown(300).addClass('open');
+          $(currentAccordionItem).children().removeClass('fa-plus').addClass('fa-minus');
+        }, 300);
+      } else {
+        $('#menu h2.menu-title.open').removeClass('open');
+        $('#menu ul.open').slideUp(300).removeClass('open').addClass('closed');
+      }
+    });
+  }
+});
+</script>
+<div class="ib-shop-menu" id="ib-shop-menu__shop" style="display:none">
+  {% section 'mobile-menu-grid' %}
+</div>

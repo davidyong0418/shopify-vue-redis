@@ -1,0 +1,443 @@
+<style>
+    /* Fonts */
+    @font-face {
+      font-family: 'Abuget';
+      src: url(' {{ 'Abuget.ttf' | asset_url }} ') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    
+    @font-face {
+      font-family: 'Playfair';
+      src: url(' {{ 'PlayfairDisplay-Regular.ttf' | asset_url }} ') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    
+    @font-face {
+      font-family: 'Oswald';
+      src: url(' {{ 'Oswald-Regular.ttf' | asset_url }} ') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    
+    @font-face {
+      font-family: 'Oswald-ExtraLight';
+      src: url(' {{ 'Oswald-ExtraLight.ttf' | asset_url }} ') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    
+    @font-face {
+      font-family: 'Lato';
+      src: url(' {{ 'Lato-Regular.ttf' | asset_url }} ') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    
+    
+    /* Extra small devices (phones, 600px and down) */
+    @media only screen and (max-width: 600px) {} 
+    
+    /* Small devices (portrait tablets and large phones, 600px and up) */
+    @media only screen and (min-width: 600px) {} 
+    
+    
+    /* Mobile */
+    
+    .heading-main__product-reviews {
+      font-family: 'Oswald-ExtraLight', sans-serif;
+      font-size: 1.714em;
+      font-weight: 100;
+      padding-top: 1.429em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+    
+    .container__tabs {
+      border: 2px solid rgb(234, 204, 206);
+      border-left: none;
+      border-right: none;
+      display: flex;
+      justify-content: space-between;
+      padding: 0;
+    }
+    
+    .tab {
+      background-color: transparent;
+      border: none;
+      color: #000;
+      font-family: 'Oswald-ExtraLight', sans-serif;
+      font-size: 0.667em;
+      padding: 0;
+      margin: 0;
+      text-transform: uppercase;
+    }
+    
+    .current {
+      color: rgb(234, 204, 206);
+      cursor: pointer;
+      font-style: initial;
+    }
+    
+    .current {
+      color: rgb(234, 204, 206);
+      font-weight: bold;
+      opacity: 1;
+      animation-name: fadeInOpacity;
+      animation-iteration-count: 1;
+      animation-timing-function: ease-in;
+      animation-duration: 400ms;
+      position: relative;
+    }
+    
+    .current:after {
+      width: 0;
+      height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-top: 15px solid rgb(234, 204, 206);
+      content: " ";
+      position: absolute;
+      top: 100%;
+    }
+    
+    .tab__curling-wands.current:after {
+      left: 26.5%;
+    }
+    
+    .tab__flat-irons.current:after {
+      left: 10%;
+    }
+    
+    .tab__dryers.current:after {
+      left: 4%;
+    }
+    
+    .tab__hair-care.current:after {
+      left: 10%;
+    }
+    
+    .tab__for-him.current:after {
+      left: 8%;
+    }
+    
+    .tab__tool-accessories.current:after {
+      left: 30%;
+    }
+    
+    .section {}
+    
+    .section__curling-wands {}
+    
+    .section__flat_irons {}
+    
+    .section__dryers {}
+    
+    .section__hair-care {}
+    
+    .section__tool_accessories {}
+    
+    ._slider {
+      position: relative;
+      overflow: hidden;
+    }
+
+    ._slider:hover ._slider_next,
+    ._slider:hover ._slider_prev {
+      color: #fff;
+      display: block;
+    }
+
+    ._slider_next, ._slider_prev {
+      position: absolute;
+      top: 35%;
+      z-index: 999;
+      display: none;
+      width: auto;
+      height: auto;
+      padding: 2% 4%;
+      background: rgb(177, 177, 177);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 2em;
+      opacity: 0.8;
+      cursor: pointer;
+      border-radius: 100%;
+    }
+    
+    ._slider_next:hover, ._slider_prev:hover {
+      opacity: 1;
+      -webkit-transition: all 0.2s ease;
+    }
+    
+    ._slider_next {
+      right: 0;
+    }
+    
+    .slider__list {
+      display: flex;
+      position: relative;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      justify-content: space-between;
+    }
+    
+    .slider__list-item {
+      text-align: center;
+    }
+
+    .figure__slide {
+      max-width: 360px;
+    }
+
+    .figure__slide:before {
+      content: '';
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 0px;
+      height: 100%;
+      background: rgb(234, 204, 206, 0.5);
+      max-height: 534.64px;
+      max-width: 360px;
+      transition: all .25s ease;
+    }
+
+    .figure__slide:hover:before {
+      width: 100%;
+    }
+
+    .figure__img-slide {
+        width: 100%;
+        height: auto;
+    }
+    
+    /* Medium devices (landscape tablets, 768px and up) */
+    @media only screen and (min-width: 768px) {
+      .heading-main__product-reviews {
+        font-size: 2.857em;
+      }
+    
+      .tab {
+        font-size: 0.889em;
+        padding: 0.447em 0;
+      }
+    
+      .container__tabs {
+        margin-top: 1.905em;
+      }
+    
+      .tab__curling-wands.current:after {
+        left: 26.5%;
+      }
+    
+      .tab__flat-irons.current:after {
+        left: 10%;
+      }
+    
+      .tab__dryers.current:after {
+        left: 4%;
+      }
+    
+      .tab__hair-care.current:after {
+        left: 10%;
+      }
+    
+      .tab__for-him.current:after {
+        left: 8%;
+      }
+    
+      .tab__tool-accessories.current:after {
+        left: 30%;
+      }
+    
+      .section {}
+    
+      .section__curling-wands {}
+    
+      .section__flat_irons {}
+    
+      .section__dryers {}
+    
+      .section__hair-care {}
+    
+      .section__tool_accessories {}
+    } 
+    
+    /* Large devices (laptops/desktops, 992px and up) */
+    @media only screen and (min-width: 992px) {} 
+    
+    /* Extra large devices (large laptops and desktops, 1200px and up) */
+    @media only screen and (min-width: 1200px) {}
+    </style>
+    
+    {% include 'shogun-products', content: page %}
+    {{ 'reviews.scss' | asset_url | stylesheet_tag }}
+    {{ 'custom_tabs.scss' | asset_url | stylesheet_tag }}
+    <div class="container container__reviews">
+      {% comment %} {{ page.content }} {% endcomment %}
+      {% comment %} {% include 'fb-wishlist' %} {% endcomment %}
+      <div class="header__product-reviews">
+        <h3 class="heading-main__product-reviews">Reviews</h3>
+      </div>
+      <div class="container container__tabs">
+        <button id="defaultOpen" class="tab tab__curling-wands current" onclick="openPage('curling_wands', this)">curling wands</button>
+        <button class="tab tab__flat-irons" onclick="openPage('flat_irons', this)" id="defaultOpen">flat irons</button>
+        <button class="tab tab__dryers" onclick="openPage('dryers', this)">dryers</button>
+        <button class="tab tab__hair-care" onclick="openPage('hair_care', this)">hair care</button>
+        <button class="tab tab__for-him" onclick="openPage('for_him', this)">for him</button>
+        <button class="tab tab__tool-accessories" onclick="openPage('tool_accessories', this)">tool accessories</button>
+      </div>
+      <!-- End of container__tabs container -->
+    
+      <section id="curling_wands" class="section section__curling-wands">
+        <div class="_slider">
+            <a href="#" class="slider-control _slider_next">&#10095;</a>
+            <a href="#" class="slider-control _slider_prev">&#10094;</a>
+            <ul class="slider__list">
+              <li class="slider__list-item">
+                <figure class="figure figure__slide">
+                    <a class="figure__link" href="#"><img class="figure__img figure__img-slide" src="{{ 'product.png' | asset_img_url: 'grande' }}" alt="L'ange Product"></a>
+                    <div class="figure__product-name">Product Name</div>
+                </figure>
+                <hr>
+                <div class="figure__product-details">Product details to go here.</div>
+                <div class="product__reviews">* * * * * 1000 Reviews</div>
+                <button class="figure__button">$28 | ADD TO BAG</button> 
+              </li>
+              <li class="slider__list-item">
+                <figure class="figure figure__slide">
+                    <a class="figure__link" href="#"><img class="figure__img figure__img-slide" src="{{ 'product.png' | asset_img_url: 'grande' }}" alt="L'ange Product"></a>
+                    <div class="figure__product-name">Product Name</div>
+                </figure>
+                <hr>
+                <div class="figure__product-details">Product details to go here.</div>
+                <div class="product__reviews">* * * * * 1000 Reviews</div>
+                <button class="figure__button">$28 | ADD TO BAG</button> 
+              </li>
+              <li class="slider__list-item">
+                <figure class="figure figure__slide">
+                    <a class="figure__link" href="#"><img class="figure__img figure__img-slide" src="{{ 'product.png' | asset_img_url: 'grande' }}" alt="L'ange Product"></a>
+                    <div class="figure__product-name">Product Name</div>
+                </figure>
+                <hr>
+                <div class="figure__product-details">Product details to go here.</div>
+                <div class="product__reviews">* * * * * 1000 Reviews</div>
+                <button class="figure__button">$28 | ADD TO BAG</button> 
+              </li>
+            </ul>  
+        </div>
+      </section><!--- End curling_wands -->
+    
+      <section id="flat_irons" class="section section__flat_irons">flat_irons</section><!-- End of flat_irons -->
+    
+      <section id="dryers" class="section section__dryers">dryers</section><!-- End of dryers -->
+    
+      <section id="hair_care" class="section section__hair-care">hair_care</section><!-- End of hair_care -->
+    
+      <section id="for_him" class="section">for_him</section><!-- End of for_him -->
+    
+      <section id="tool_accessories" class="section section__tool_accessories">tool_accessories</section><!-- End of tool_accessories -->
+    
+    </div>
+    <!-- End container container__reviews -->
+    
+    
+    <script>
+      function openPage(pageName, elmnt) {
+        var i, section, tab;
+        section = document.getElementsByClassName('section');
+        tab = document.getElementsByClassName('tab');
+        for (i = 0; i < section.length; i++) {
+          section[i].style.display = 'none';
+        }
+    
+        document.getElementById(pageName).style.display = 'block';
+      }
+      // Get the element with id='defaultOpen' and click on it
+      document.getElementById('defaultOpen').click();
+    </script>
+    
+    <script>
+    jQuery(document).ready(function ($) {
+    
+        var interval;
+        // interval = setInterval(function () {
+        //   moveRight();
+        // }, 3000);
+    
+        $('._slider').mouseover(function () {
+          clearInterval(interval);
+        });
+    
+        // $('._slider').mouseleave(function () {
+        //   interval = setInterval(function () {
+        //     moveRight();
+        //   }, 3000);
+        // });
+    
+        var slideCount = $('._slider ul li').length;
+        var slideWidth = $('._slider ul li').width();
+        var slideHeight = $('._slider ul li').height();
+        var sliderUlWidth = slideCount * slideWidth;
+    
+        $('._slider ul li:last-child').prependTo('._slider ul');
+    
+        function moveLeft() {
+          $('._slider ul').animate({
+            left: +slideWidth
+          }, 200, function () {
+            $('._slider ul li:last-child').prependTo('._slider ul');
+            $('._slider ul').css('left', '');
+          });
+        };
+    
+        function moveRight() {
+          $('._slider ul').animate({
+            left: -slideWidth
+          }, 200, function () {
+            $('._slider ul li:first-child').appendTo('._slider ul');
+            $('._slider ul').css('left', '');
+          });
+        };
+    
+        $('._slider_prev').click(function () {
+          moveLeft();
+          return false;
+        });
+    
+        $('._slider_next').click(function () {
+          moveRight();
+          return false;
+        });
+    
+      });
+    </script>
+    
+    <script>
+      $('.tab').click(function () {
+        $('.current').removeClass('current');
+        $(this).addClass('current');
+      });
+    </script>
+    
+    <script>
+      $(document).on('scroll', function () {
+        var pageTop = $(document).scrollTop()
+        var pageBottom = pageTop + $(window).height()
+        var tags = $('.appear')
+    
+        for (var i = 0; i < tags.length; i++) {
+          var tag = tags[i]
+    
+          if ($(tag).position().top < pageBottom) {
+            $(tag).addClass('visible')
+          } else {
+            $(tag).removeClass('visible')
+          }
+        }
+      })
+    </script>
