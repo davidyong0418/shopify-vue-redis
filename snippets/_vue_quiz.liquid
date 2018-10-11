@@ -1,147 +1,94 @@
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.4/vue.js"></script>
+
 <style>
 #app .quiz_img{
-    width: 100%;
-    height: 100%;
+    width: 30%;
+}
+#app .quiz-answer
+{
+    cursor: pointer;
 }
 </style>
 
-<div id="app">
+<div id="app_vue">
     <div class="container">
         <div class="row">
-            <h3 class="headline mb-0 text-md-center">This is Answer and Question system</h3>
-            <div class="col-sm-12">
-                <div class="col-md-6" v-for="(item, index) in answers">
-                {{item}}
-                    <div><img class="quiz_img" src="{{item.img}}"></div>
-                    <div class="text-center">{{item.label}}</div>
-                    <div class="text-center">{{item.label}}</div>
+        {{dddd}}
+            <h3 class="headline mb-0 text-md-center">Question {{quiz_order}}</h3>
+            <div class="col-sm-12 text-center">
+                <div class="col-md-4 text-center quiz-answer">
+                    <img src="http://ddcfq0gxiontw.cloudfront.net/instagram/41/1867548307242683108_8544169941/low_resolution.jpg" class="quiz_img">
+                    <div class="text-center">Thin</div>
                 </div>
+                 <div class="col-md-4 text-center quiz-answer">
+                    <img src="http://ddcfq0gxiontw.cloudfront.net/instagram/41/1867548307242683108_8544169941/low_resolution.jpg" class="quiz_img">
+                    <div class="text-center">Medium</div>
+                </div>
+                 <div class="col-md-4 text-center quiz-answer">
+                    <img src="http://ddcfq0gxiontw.cloudfront.net/instagram/41/1867548307242683108_8544169941/low_resolution.jpg" class="quiz_img">
+                    <div class="text-center">Coarse</div>
+                </div>
+                <div class="col-md-12 quiz-answer" v-for="(quiz, index) in current_quiz.answers">
+                    <div class="text-center">test</div>
+                    <div class="text-center">{{index}}</div>
+                    <div class="text-center">{{quiz.label}}</div>
+                </div>
+                <button class="flat-right" v-if="previous_btn == true" @click="previous">Previous</v-btn>
+                <button class="flat-right" v-if="next_btn == true" @click="next">Next</v-btn>
             </div>
-            <button class="flat-right" v-if="previous_btn == true" @click="previous">Previous</v-btn>
-            <button class="flat-right" v-if="next_btn == true" @click="next">Next</v-btn>
+            
         </div>
     </div>    
 </div>
 
 <script>
   var app = new Vue({
-      el: "#app",
-    data() {
-      return {
+      el: "#app_vue",
+    data:{
         video_data:{},
         step_data:{},
+        dddd:'dsafasf',
         quiz_data:[
             { 
                 question:'In one word, your hair type',
                 answers:[
-                    {label:'Thin', 'img':'//ddcfq0gxiontw.cloudfront.net/instagram/41/1867548307242683108_8544169941/low_resolution.jpg'},
-                    {label:'Medium', 'img':'//ddcfq0gxiontw.cloudfront.net/instagram/56/1866861275416176054_179078256/standard_resolution.jpg'},
-                    {label:'Coarse', 'img':'//ddcfq0gxiontw.cloudfront.net/instagram/56/1866861275416176054_179078256/standard_resolution.jpg'},
-                ],
-                select:'',
-            },
-            { 
-                question:'Does your hair hold a curl?',
-                answers:[
-                    {label:'Yes', img:'//ddcfq0gxiontw.cloudfront.net/instagram/41/1867548307242683108_8544169941/low_resolution.jpg'},
-                    {label:'No', 'img':'//ddcfq0gxiontw.cloudfront.net/instagram/56/1866861275416176054_179078256/standard_resolution.jpg'},
-                ],
-                select:'',
-            },
-            { 
-                question:'What is your texture',
-                answers:[
-                    {label:'Straight', img:'//ddcfq0gxiontw.cloudfront.net/instagram/41/1867548307242683108_8544169941/low_resolution.jpg'},
-                    {label:'Wavy', img:'//ddcfq0gxiontw.cloudfront.net/instagram/56/1866861275416176054_179078256/standard_resolution.jpg'},
-                    {label:'Curly', img:'//ddcfq0gxiontw.cloudfront.net/instagram/56/1866861275416176054_179078256/standard_resolution.jpg'},
-                    {label:'Frizzy', img:'//ddcfq0gxiontw.cloudfront.net/instagram/56/1866861275416176054_179078256/standard_resolution.jpg'},
-                ],
-                select:'',
-            },
-             { 
-                question:'How long is your hair',
-                answers:[
-                    {label:'Short', img:'//ddcfq0gxiontw.cloudfront.net/instagram/41/1867548307242683108_8544169941/low_resolution.jpg'},
+                    {label:'Thin', img:'//ddcfq0gxiontw.cloudfront.net/instagram/41/1867548307242683108_8544169941/low_resolution.jpg'},
                     {label:'Medium', img:'//ddcfq0gxiontw.cloudfront.net/instagram/56/1866861275416176054_179078256/standard_resolution.jpg'},
-                    {label:'Long', img:'//ddcfq0gxiontw.cloudfront.net/instagram/56/1866861275416176054_179078256/standard_resolution.jpg'},
+                    {label:'Coarse', img:'//ddcfq0gxiontw.cloudfront.net/instagram/56/1866861275416176054_179078256/standard_resolution.jpg'},
                 ],
                 select:'',
-            },
-            { 
-                question:'What is the condition of your hair?',
-                answers:[
-                    {label:'Straight', img:'//ddcfq0gxiontw.cloudfront.net/instagram/41/1867548307242683108_8544169941/low_resolution.jpg'},
-                    {label:'Wavy', img:'//ddcfq0gxiontw.cloudfront.net/instagram/56/1866861275416176054_179078256/standard_resolution.jpg'},
-                    {label:'Curly', img:'//ddcfq0gxiontw.cloudfront.net/instagram/56/1866861275416176054_179078256/standard_resolution.jpg'},
-                    {label:'Frizzy', img:'//ddcfq0gxiontw.cloudfront.net/instagram/56/1866861275416176054_179078256/standard_resolution.jpg'},
-                ],
-                select:'',
-            },
-            { 
-                question:'Is your hiar dyed?',
-                answers:[
-                    {label:'Straight', img:'//ddcfq0gxiontw.cloudfront.net/instagram/41/1867548307242683108_8544169941/low_resolution.jpg'},
-                    {label:'Wavy', img:'//ddcfq0gxiontw.cloudfront.net/instagram/56/1866861275416176054_179078256/standard_resolution.jpg'},
-                    {label:'Curly', img:'//ddcfq0gxiontw.cloudfront.net/instagram/56/1866861275416176054_179078256/standard_resolution.jpg'},
-                    {label:'Frizzy', img:'//ddcfq0gxiontw.cloudfront.net/instagram/56/1866861275416176054_179078256/standard_resolution.jpg'},
-                ],
-                select:'',
-            },
-            { 
-                question:'What is the condition of your hair?',
-                answers:[
-                    {label:'Straight', img:'//ddcfq0gxiontw.cloudfront.net/instagram/41/1867548307242683108_8544169941/low_resolution.jpg'},
-                    {label:'Wavy', img:'//ddcfq0gxiontw.cloudfront.net/instagram/56/1866861275416176054_179078256/standard_resolution.jpg'},
-                    {label:'Curly', img:'//ddcfq0gxiontw.cloudfront.net/instagram/56/1866861275416176054_179078256/standard_resolution.jpg'},
-                    {label:'Frizzy', img:'//ddcfq0gxiontw.cloudfront.net/instagram/56/1866861275416176054_179078256/standard_resolution.jpg'},
-                ],
-                select:'',
-            },
-            { 
-                question:'What is the condition of your hair?',
-                answers:[
-                    {label:'More Volume', img:''},
-                    {label:'Less frizzy', img:''},
-                    {label:'Shinier, healthire hair', img:''},
-                    {label:'Bouncier curls', img:''},
-                ],
-                select:'',
-            },
-            { 
-                question:'How do you prefer your curls?',
-                answers:[
-                    {label:'Tight curls', img:'//ddcfq0gxiontw.cloudfront.net/instagram/41/1867548307242683108_8544169941/low_resolution.jpg', sublabel:'long-lasting volume'},
-                    {label:'loose waves', img:'//ddcfq0gxiontw.cloudfront.net/instagram/56/1866861275416176054_179078256/standard_resolution.jpg', sublabel:'beachy waves messy'},
-                ],
-                select:'',
-            },
+            }
         ],
-        current_quiz:[],
+        current_quiz: [],
         selection:0,
         previous_btn: false,
         next_btn: false,
-
-      }
+        current_count: 1,
+        quiz_order:1,
     },
-    computed: {
-      player() {
-        return this.$refs.videoPlayer.player
-      },
+    
+    mounted() {
     },
     created () {
-      this.init_quiz();
+     this.init_quiz() 
       this.next_btn = true;
     },
     methods: {
         init_quiz(){
+            alert();
             this.current_quiz = this.quiz_data[this.selection];
+            this.current_count = this.current_quiz.answers.length;
+            console.log('here: ', this.current_quiz.answers);
+            console.log(this.current_count);
         },
         previous(){
             this.selection = this.selection - 1;
         },
         next(){
             this.selection = this.selection + 1;
+        },
+        select(event){
+            console.log(event);
         },
 
     },
