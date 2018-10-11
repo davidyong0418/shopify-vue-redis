@@ -24,7 +24,7 @@
         var myForm = $('.product_rp_div.p{{ product.id }}').closest("form");
         var idInput = myForm.find("[name='id']");
         var myVariant = idInput.val();
-        var prodId = {{ product.id }};
+        {% comment %} var prodId = {{ product.id }}; {% endcomment %}
         
         group_id = rp_prod['p'+prodId]["v"+myVariant].rp_group_id;
         
@@ -35,7 +35,6 @@
         }
         
         if(!generate_rp_tag && group_id)
-          $('.product_rp_div.p{{ product.id }}').append('<script async class="generate_rp" src="https://ro.boldapps.net/recurring_settings/generate_rp?&shop_url={{ shop.permanent_domain }}&group_id='+group_id+'&customer_id={{ customer.id }}&product_id='+prodId+'&variant_id='+myVariant+'&v=2"></'+''+'script>');
         
         generate_rp_tag = true;
         {% endif %}
@@ -54,8 +53,6 @@
         }
         
         //add add_to_order button
-        if(!add_to_order_tag)
-          $('.product_rp_div.p{{ product.id }}').append('<script async class="add_to_order" src="https://ro.boldapps.net/recurring_settings/add_to_order?&shop_url={{ shop.permanent_domain }}&group_id='+group_id+'&customer_id={{ customer.id }}&product_id='+prodId+'&variant_id='+myVariant+'&v=2"></'+''+'script>');
         
         add_to_order_tag = true;
         

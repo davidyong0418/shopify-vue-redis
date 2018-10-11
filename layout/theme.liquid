@@ -55,7 +55,8 @@ obApi('track', 'PAGE_VIEW');
   <meta name="author" content="{{ "general.meta.author" | t }}">
   <meta name=“google-site-verification” content=“gGnNE3S52Ml0RNY5VK-vAGqAkfK_-WlxeqPxwNQcnNI” />
 <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
-
+{{ 'vue.js' | asset_url | script_tag }}
+{{ 'vue-simple-progress.min.js' | asset_url | script_tag }}
 
   <!-- Social meta ================================================== -->
   {% include 'social-meta-tags' %}
@@ -332,11 +333,11 @@ obApi('track', 'PAGE_VIEW');
   </div>
   {% endif %}
     This is my store
-  {% include '_vue_quiz' %}
+
   <div class="header-wrapper{% if settings.transparent_header and template == "index" %} transparent transform-mobile{% endif %}">
     {% include settings.header_design %}
   </div>
-
+  {% include '_vue_quiz' %}
     {% if template != "index" %}{% unless template contains "page.home-page_layout" %}{% comment %}{% include "breadcrumb" %}{% endcomment %}{% endunless %}{% endif %}
 
     <div id="pageContent" class="starthide{% if template == "index" and settings.transparent_footer %} nopadding{% endif %}">

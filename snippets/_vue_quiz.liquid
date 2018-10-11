@@ -1,63 +1,181 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.4/vue.js"></script>
+{% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.4/vue.js"></script> {% endcomment %}
 
 <style>
-#app .quiz_img{
-    width: 30%;
-}
-#app .quiz-answer
+#app_vue .quiz-answer
 {
     cursor: pointer;
+    display:inline-block;
+    float:none;
+    /* reset the text-align */
+    text-align:left;
+    /* inline-block space fix */
+    margin-right:-4px;
+}
+#app_vue .quiz-answer .quiz-answer-label{
+    padding-top: 3%;
+    font-size: 16px;
+}
+#app_vue .quiz-answer-text{
+    cursor: pointer;
+}
+#app_vue .quiz-answer-text .quiz-answer-label{
+    padding-top: 1%;
+    font-size: 16px;
+}
+#app_vue{
+    padding-top: 30px;
+    padding-bottom: 20px;
+}
+#app_vue .previous-btn{
+    background-color: white;
+    color: black;
+    margin-right: 15px;
+}
+#app_vue .next-btn{
+    color: white;
+    background-color: black;
+}
+#app_vue .btn
+{
+    border: 1px solid black;
+    padding: 3px 50px;
+}
+{% comment %} #app_vue .vue-simple-progress-bar{
+    height: 15px !important; 
+    transition: all 0.5s ease 0s;
+    
+} {% endcomment %}
+#app_vue  .vue-simple-progress{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background: none;
+}
+#app_vue .header{
+    width: 200px;
+    margin: auto;
+}
+#app_vue .question{
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+#app_vue .align-items-center{
+    height: 250px;
 }
 </style>
 
 <div id="app_vue">
     <div class="container">
-        <div class="row">
-        {{dddd}}
-            <h3 class="headline mb-0 text-md-center">Question {{quiz_order}}</h3>
-            <div class="col-sm-12 text-center">
-                <div class="col-md-4 text-center quiz-answer">
-                    <img src="http://ddcfq0gxiontw.cloudfront.net/instagram/41/1867548307242683108_8544169941/low_resolution.jpg" class="quiz_img">
-                    <div class="text-center">Thin</div>
-                </div>
-                 <div class="col-md-4 text-center quiz-answer">
-                    <img src="http://ddcfq0gxiontw.cloudfront.net/instagram/41/1867548307242683108_8544169941/low_resolution.jpg" class="quiz_img">
-                    <div class="text-center">Medium</div>
-                </div>
-                 <div class="col-md-4 text-center quiz-answer">
-                    <img src="http://ddcfq0gxiontw.cloudfront.net/instagram/41/1867548307242683108_8544169941/low_resolution.jpg" class="quiz_img">
-                    <div class="text-center">Coarse</div>
-                </div>
-                <div class="col-md-12 quiz-answer" v-for="(quiz, index) in current_quiz.answers">
-                    <div class="text-center">test</div>
-                    <div class="text-center">{{index}}</div>
-                    <div class="text-center">{{quiz.label}}</div>
-                </div>
-                <button class="flat-right" v-if="previous_btn == true" @click="previous">Previous</v-btn>
-                <button class="flat-right" v-if="next_btn == true" @click="next">Next</v-btn>
+        <div class="row text-center">
+            <div class="header">
+                <img :src="current_quiz.header" class="quiz-img" style="width:100%;height:90%;">
             </div>
-            
+            <h3 class="headline mb-0 text-md-center question"> <% current_quiz.question %></h3>
+            <div class="col-sm-12 align-items-center">
+                <div v-bind:class="quiz_class" v-for="(quiz, index) in current_quiz.answers">
+                    <div v-on:click="select(index)">
+                        <img v-show="quiz.img != null" :src="quiz.img" class="quiz-img" style="width:100%;height:90%;">
+                        <div class="text-center quiz-answer-label"><% quiz.label %></div>
+                        <div class="text-center quiz-answer-label"><% quiz.sublabel %></div>
+                    </div>
+                </div>
+            </div>
+            <button class="flat-right btn previous-btn" v-if="previous_btn == true" v-on:click="previous">< Previous</v-btn>
+            <button class="flat-right btn next-btn" v-if="next_btn == true" v-on:click="next">Next ></v-btn>
+            <button class="flat-right btn next-btn" v-if="submit_btn == true" v-on:click="submit">Submit ></v-btn>
+
         </div>
+        <vue-simple-progress  size="big" class="mt4" :val="progress_value" text-posit  ion="top"></vue-simple-progress>
     </div>    
 </div>
 
 <script>
   var app = new Vue({
+      delimiters: ['<%', '%>'],
       el: "#app_vue",
-    data:{
-        video_data:{},
-        step_data:{},
-        dddd:'dsafasf',
+    data() {
+      return {
+        progress_value: 0,
         quiz_data:[
             { 
                 question:'In one word, your hair type',
+                header: "{{ 'question1.png' | asset_img_url: '300x' }}",
                 answers:[
-                    {label:'Thin', img:'//ddcfq0gxiontw.cloudfront.net/instagram/41/1867548307242683108_8544169941/low_resolution.jpg'},
-                    {label:'Medium', img:'//ddcfq0gxiontw.cloudfront.net/instagram/56/1866861275416176054_179078256/standard_resolution.jpg'},
-                    {label:'Coarse', img:'//ddcfq0gxiontw.cloudfront.net/instagram/56/1866861275416176054_179078256/standard_resolution.jpg'},
+                    {label:'Thin', img:"{{ 'question1_thin.png' | asset_img_url: '300x' }}"},
+                    {label:'Medium', img:"{{ 'question1_medium.png' | asset_img_url: '300x' }}"},
+                    {label:'Coarse', img:"{{ 'question1_coarse.png' | asset_img_url: '300x' }}"},
                 ],
                 select:'',
-            }
+            },
+            { 
+                question:'Does your hair hold a curl?',
+                header: "{{ 'question2.png' | asset_img_url: '300x' }}",
+                answers:[
+                    {label:'Yes', img:"{{ 'question2_yes.png' | asset_img_url: '300x' }}"},
+                    {label:'No', img:"{{ 'question2_no.png' | asset_img_url: '300x' }}"},
+                ],
+                select:'',
+            },
+            { 
+                question:'What is your texture',
+                header: "{{ 'question3.png' | asset_img_url: '300x' }}",
+                answers:[
+                    {label:'Straight', img:"{{ 'question3_straight.png' | asset_img_url: '300x' }}"},
+                    {label:'Wavy', img:"{{ 'question3_wavy.png' | asset_img_url: '300x' }}"},
+                    {label:'Curly', img:"{{ 'question3_curly.png' | asset_img_url: '300x' }}"},
+                    {label:'Frizzy', img:"{{ 'question3_frizzy.png' | asset_img_url: '300x' }}"},
+                ],
+                select:'',
+            },
+             { 
+                question:'How long is your hair',
+                header: "{{ 'question4.png' | asset_img_url: '300x' }}",
+                answers:[
+                    {label:'Short', img:"{{ 'question4_short.png' | asset_img_url: '300x' }}"},
+                    {label:'Medium', img:"{{ 'question4_medium.png' | asset_img_url: '300x' }}"},
+                    {label:'Long', img:"{{ 'question4_long.png' | asset_img_url: '300x' }}"},
+                ],
+                select:'',
+            },
+            { 
+                question:'What is the condition of your hair?',
+                header: "{{ 'question5.png' | asset_img_url: '300x' }}",
+                answers:[
+                    {label:'Oily', img:"{{ 'question5_oily.png' | asset_img_url: '300x' }}"},
+                    {label:'Damaged', img:"{{ 'question5_damaged.png' | asset_img_url: '300x' }}"},
+                    {label:'Dry', img:"{{ 'question5_dry.png' | asset_img_url: '300x' }}"},
+                    {label:'Normal', img:"{{ 'question5_normal.png' | asset_img_url: '300x' }}"},
+                ],
+                select:'',
+            },
+            { 
+                question:'Is your hiar dyed?',
+                header: "{{ 'question6.png' | asset_img_url: '300x' }}",
+                answers:[
+                    {label:'Yes', img:"{{ 'question6_yes.png' | asset_img_url: '300x' }}"},
+                    {label:'No', img:"{{ 'question6_no.png' | asset_img_url: '300x' }}"},
+                ],
+                select:'',
+            },
+            { 
+                question:'what result do you want',
+                header: "{{ 'question7.png' | asset_img_url: '300x' }}",
+                answers:[
+                    {label:'More Volume', img:null},
+                    {label:'Less frizzy', img:null},
+                    {label:'Shinier, healthire hair', img:null},
+                    {label:'Bouncier curls', img:null},
+                ],
+                select:'',
+            },
+            { 
+                question:'How do you prefer your curls?',
+                header: "{{ 'question8.png' | asset_img_url: '300x' }}",
+                answers:[
+                    {label:'Tight curls', img:"{{ 'question8_tight.png' | asset_img_url: '300x' }}", sublabel:'long-lasting volume'},
+                    {label:'loose waves', img:"{{ 'question8_loose.png' | asset_img_url: '300x' }}", sublabel:'beachy waves messy'},
+                ],
+                select:'',
+            },
         ],
         current_quiz: [],
         selection:0,
@@ -65,32 +183,96 @@
         next_btn: false,
         current_count: 1,
         quiz_order:1,
+        itemclass:'',
+        submit_btn:false,
+        quiz_class:'col-sm-2 quiz-answer',
+        select_count:0,
+
+    }
     },
     
     mounted() {
     },
     created () {
-     this.init_quiz() 
+     this.init_quiz();
       this.next_btn = true;
     },
     methods: {
         init_quiz(){
-            alert();
             this.current_quiz = this.quiz_data[this.selection];
             this.current_count = this.current_quiz.answers.length;
             console.log('here: ', this.current_quiz.answers);
-            console.log(this.current_count);
+            console.log(this.itemclass);
         },
         previous(){
-            this.selection = this.selection - 1;
+            this.calculate_quiz_order('pre');
+            this.current_quiz = this.quiz_data[this.selection];
+            this.next_btn = true;
+            this.submit_btn = false;
+            this.is_text();
+            if(this.selection == 0 )
+            {
+                this.previous_btn = false;
+                
+            }
         },
         next(){
-            this.selection = this.selection + 1;
+            this.previous_btn = true;
+            this.calculate_quiz_order('next');
+            console.log(this.selection);
+            this.is_text();
+            this.current_quiz = this.quiz_data[this.selection];
+            if(this.selection == 7 )
+            {
+                this.next_btn = false;
+                this.submit_btn = true;
+            }
         },
-        select(event){
-            console.log(event);
+        select(index){
+            console.log(this.quiz_data[this.selection].select);
+            if(this.quiz_data[this.selection].select === '')
+            {
+                this.select_count = this.select_count + 1;
+            }
+            this.quiz_data[this.selection].select = index;
+            this.progress_value = this.select_count * (100/8);
+            if(this.selection < 7 )
+            {
+                this.next();
+            }
+           
+            
+            console.log('this.selction================', this.selection);
+            console.log('this.quiz_data[this.selection].=============', this.quiz_data[this.selection]);
+            console.log('this.quiz_data++++++++++++++++++++',this.quiz_data);
         },
+        calculate_quiz_order(action){
+            if(action == 'next')
+            {
+                this.selection = this.selection + 1;
+                this.quiz_order = this.quiz_order + 1;
+            }
+            else{
+                this.selection = this.selection - 1;
+                this.quiz_order = this.quiz_order - 1;
+            }
 
+        },
+        submit()
+        {
+            console.log('get result');
+        },
+        is_text()
+        {
+            if(this.selection == 6)
+            {
+                this.quiz_class = 'col-sm-12 quiz-answer-text';
+            }
+            else{
+                this.quiz_class = 'col-sm-2 quiz-answer';
+            }
+        }
+        
     },
   })
 </script>
