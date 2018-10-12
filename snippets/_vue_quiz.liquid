@@ -1,16 +1,7 @@
 {% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.4/vue.js"></script> {% endcomment %}
 
 <style>
-#app_vue .quiz-answer
-{
-    cursor: pointer;
-    display:inline-block;
-    float:none;
-    /* reset the text-align */
-    text-align:left;
-    /* inline-block space fix */
-    margin-right:-4px;
-}
+
 #app_vue .quiz-answer .quiz-answer-label{
     padding-top: 3%;
     font-size: 16px;
@@ -21,6 +12,22 @@
 #app_vue .quiz-answer-text .quiz-answer-label{
     padding-top: 1%;
     font-size: 16px;
+    font-weight: bold;
+
+    display: inline-block;
+    margin-bottom: 0;
+    text-align: center;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    white-space: nowrap;
+    padding: 6px 12px;
+    line-height: 1.6875;
+    border-radius: 4px;
+    border: 1px solid black;
+    width: 300px;
+    margin-top: 20px;
 }
 #app_vue{
     padding-top: 30px;
@@ -35,16 +42,7 @@
     color: white;
     background-color: black;
 }
-#app_vue .btn
-{
-    border: 1px solid black;
-    padding: 3px 50px;
-}
-{% comment %} #app_vue .vue-simple-progress-bar{
-    height: 15px !important; 
-    transition: all 0.5s ease 0s;
-    
-} {% endcomment %}
+
 #app_vue  .vue-simple-progress{
     margin-top: 10px;
     margin-bottom: 10px;
@@ -55,33 +53,72 @@
     margin: auto;
 }
 #app_vue .question{
-    padding-top: 10px;
-    padding-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 30px;
 }
 #app_vue .align-items-center{
-    height: 250px;
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+@media screen and (min-width: 750px) {
+    #app_vue .quiz-answer
+    {
+        cursor: pointer;
+        display:inline-block;
+        float:none;
+        text-align:left;
+        margin-right:-4px;
+    }
+    #app_vue .btn
+    {
+        border: 1px solid black;
+        padding: 3px 50px;
+    }
+}
+@media screen and (max-width: 750px) {
+   #app_vue .quiz-answer
+    {
+        cursor: pointer;
+        float:none;
+        text-align:left;
+        margin:auto;
+        padding-top: 20px;
+    }
+    #app_vue .btn
+    {
+        border: 1px solid black;
+    }
+    
+}
+#app_vue .v-spinner{
+    margin-top: 100px;
+    margin-bottom: 100px;
 }
 </style>
-
+ {% if customer  %}
+ <input type="hidden" id="is_login" val='true'>
+ {% endif %}
 <div id="app_vue">
+
+
     <div class="container">
-        <div class="row text-center">
+        <scale-loader :loading="loading" :color="color" :height="height" :width="width" v-if="loading_state == true"></scale-loader>
+        <div class="row text-center" v-if="loading_state == false">
             <div class="header">
                 <img :src="current_quiz.header" class="quiz-img" style="width:100%;height:90%;">
             </div>
             <h3 class="headline mb-0 text-md-center question"> <% current_quiz.question %></h3>
             <div class="col-sm-12 align-items-center">
+                
                 <div v-bind:class="quiz_class" v-for="(quiz, index) in current_quiz.answers">
                     <div v-on:click="select(index)">
                         <img v-show="quiz.img != null" :src="quiz.img" class="quiz-img" style="width:100%;height:90%;">
                         <div class="text-center quiz-answer-label"><% quiz.label %></div>
-                        <div class="text-center quiz-answer-label"><% quiz.sublabel %></div>
+                        <div class="text-center quiz-answer-sublabel"><% quiz.sublabel %></div>
                     </div>
                 </div>
             </div>
             <button class="flat-right btn previous-btn" v-if="previous_btn == true" v-on:click="previous">< Previous</v-btn>
-            <button class="flat-right btn next-btn" v-if="next_btn == true" v-on:click="next">Next ></v-btn>
-            <button class="flat-right btn next-btn" v-if="submit_btn == true" v-on:click="submit">Submit ></v-btn>
 
         </div>
         <vue-simple-progress  size="big" class="mt4" :val="progress_value" text-posit  ion="top"></vue-simple-progress>
@@ -89,15 +126,36 @@
 </div>
 
 <script>
+var is_login = document.querySelector('#is_login');
+var flag = false;
+if(is_login == null)
+{
+    flag = false;
+    console.log('is_login-----------------',is_login);
+}
+else{
+    flag = true;
+}
+
+var ScaleLoader = VueSpinner.ScaleLoader;
   var app = new Vue({
-      delimiters: ['<%', '%>'],
-      el: "#app_vue",
+    delimiters: ['<%', '%>'],
+    el: "#app_vue",
+    components: {
+        ScaleLoader
+        },
     data() {
       return {
+          color: '#ff1d5e',
+          height: '35px',
+         width: '10px',
+         size: '100px',
+        loading: '3000',
         progress_value: 0,
+        loading_state: false,
         quiz_data:[
             { 
-                question:'In one word, your hair type',
+                question:'In one word, your hair type:',
                 header: "{{ 'question1.png' | asset_img_url: '300x' }}",
                 answers:[
                     {label:'Thin', img:"{{ 'question1_thin.png' | asset_img_url: '300x' }}"},
@@ -116,7 +174,7 @@
                 select:'',
             },
             { 
-                question:'What is your texture',
+                question:'What is your texture?',
                 header: "{{ 'question3.png' | asset_img_url: '300x' }}",
                 answers:[
                     {label:'Straight', img:"{{ 'question3_straight.png' | asset_img_url: '300x' }}"},
@@ -127,7 +185,7 @@
                 select:'',
             },
              { 
-                question:'How long is your hair',
+                question:'How long is your hair?',
                 header: "{{ 'question4.png' | asset_img_url: '300x' }}",
                 answers:[
                     {label:'Short', img:"{{ 'question4_short.png' | asset_img_url: '300x' }}"},
@@ -148,7 +206,7 @@
                 select:'',
             },
             { 
-                question:'Is your hiar dyed?',
+                question:'Is your hair dyed?',
                 header: "{{ 'question6.png' | asset_img_url: '300x' }}",
                 answers:[
                     {label:'Yes', img:"{{ 'question6_yes.png' | asset_img_url: '300x' }}"},
@@ -157,12 +215,12 @@
                 select:'',
             },
             { 
-                question:'what result do you want',
+                question:'What result do you want?',
                 header: "{{ 'question7.png' | asset_img_url: '300x' }}",
                 answers:[
-                    {label:'More Volume', img:null},
+                    {label:'More volume', img:null},
                     {label:'Less frizzy', img:null},
-                    {label:'Shinier, healthire hair', img:null},
+                    {label:'Shinier, healthier hair', img:null},
                     {label:'Bouncier curls', img:null},
                 ],
                 select:'',
@@ -171,8 +229,8 @@
                 question:'How do you prefer your curls?',
                 header: "{{ 'question8.png' | asset_img_url: '300x' }}",
                 answers:[
-                    {label:'Tight curls', img:"{{ 'question8_tight.png' | asset_img_url: '300x' }}", sublabel:'long-lasting volume'},
-                    {label:'loose waves', img:"{{ 'question8_loose.png' | asset_img_url: '300x' }}", sublabel:'beachy waves messy'},
+                    {label:'Tight curls', img:"{{ 'question8_tight.png' | asset_img_url: '300x' }}", sublabel:'(long-lasting volume)'},
+                    {label:'Loose waves', img:"{{ 'question8_loose.png' | asset_img_url: '300x' }}", sublabel:'(beachy waves messy)'},
                 ],
                 select:'',
             },
@@ -185,7 +243,7 @@
         quiz_order:1,
         itemclass:'',
         submit_btn:false,
-        quiz_class:'col-sm-2 quiz-answer',
+        quiz_class:'col-xs-5 col-sm-2 quiz-answer',
         select_count:0,
 
     }
@@ -194,6 +252,8 @@
     mounted() {
     },
     created () {
+        const data = JSON.parse(localStorage.getItem('results'));
+            console.log(data);
      this.init_quiz();
       this.next_btn = true;
     },
@@ -240,8 +300,15 @@
             {
                 this.next();
             }
-           
-            
+            if(this.select_count == 8)
+            {
+                this.loading_state = true;
+                var self = this;
+                this.save_localstorage();
+                {% comment %} setTimeout(function(){
+                    self.loading_state = false;
+                }, 3000); {% endcomment %}
+            }
             console.log('this.selction================', this.selection);
             console.log('this.quiz_data[this.selection].=============', this.quiz_data[this.selection]);
             console.log('this.quiz_data++++++++++++++++++++',this.quiz_data);
@@ -266,14 +333,22 @@
         {
             if(this.selection == 6)
             {
-                this.quiz_class = 'col-sm-12 quiz-answer-text';
+                this.quiz_class = 'col-xs-12 col-sm-12 quiz-answer-text';
             }
             else{
-                this.quiz_class = 'col-sm-2 quiz-answer';
+                this.quiz_class = 'col-xs-5 col-sm-2 quiz-answer';
             }
+        },
+        save_localstorage()
+        {
+            console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',this.quiz_data);
+            localStorage.setItem('results', JSON.stringify(this.quiz_data));
+            const data = JSON.parse(localStorage.getItem('results'));
+            console.log(data);
         }
         
     },
-  })
+  });
+
 </script>
 </div>
