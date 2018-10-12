@@ -337,7 +337,9 @@ obApi('track', 'PAGE_VIEW');
   <div class="header-wrapper{% if settings.transparent_header and template == "index" %} transparent transform-mobile{% endif %}">
     {% include settings.header_design %}
   </div>
-  {% include '_vue_quiz' %}
+  {% if template == "index" %}
+{% include '_vue_quiz' %}
+{% endif %}
     {% if template != "index" %}{% unless template contains "page.home-page_layout" %}{% comment %}{% include "breadcrumb" %}{% endcomment %}{% endunless %}{% endif %}
 
     <div id="pageContent" class="starthide{% if template == "index" and settings.transparent_footer %} nopadding{% endif %}">
@@ -388,6 +390,7 @@ obApi('track', 'PAGE_VIEW');
 <!-- CRITEO START -->
 {% include 'criteo-tracking' %}
 <!-- CRITEO END -->
+
 {% if template != "index" %}
 <!-- Gorgias Chat Widget Start -->
   <!--

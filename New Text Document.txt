@@ -4,7 +4,6 @@
     {%- assign name_collection = section.settings.collection -%}
     {%- if name_collection == blank -%}{%- assign name_collection = "trending-products" -%}{%- endif -%}
     {%- assign collection = collections[name_collection] -%}
-    {{ name_collection }}
     {% if collection.products.size == 0 %}
     <span style="display: flex; justify-content: center;">{{ section.settings.title }}.&#160;Add products. Select collection in this section using the sidebar.</span>
     {% else %}
@@ -12,11 +11,16 @@
       <div class="carousel-products__center pull-right"> <span class="btn-prev"></span> <span class="btn-next"></span> </div>
       <h2 class="text-center text-uppercase">{{ section.settings.title }}</h2>
     </div>
-    <div class="carousel-products row" id="carousel1">
+    <div class="carousel-products row">
       {% for product in collection.products %}
+      {% assign current_variant = product.selected_or_first_available_variant %}
+      <span class="variant-sku">{{ current_variant.sku }}</span>
+      <span>ddddddddddddddddddddddddddd</span>
+      {% if current_variant.sku == '12' %}
       <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3 col-xl-one-six">
       {% include "integrabeauty-product-grid-item" hoverzoom: "false" %}
       </div>
+      {% endif %}
       {% endfor %}
     </div>
     {% endif %}
@@ -25,7 +29,6 @@
 <script>
 jQuery(document).ready(function() {
 
-    productCarousel(jQuery('#carousel1'),6,4,4,2,1);
 
 });
 </script>

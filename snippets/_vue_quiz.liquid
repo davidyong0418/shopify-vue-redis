@@ -100,10 +100,8 @@
  {% endif %}
 <div id="app_vue">
 
-
-    <div class="container">
-        <scale-loader :loading="loading" :color="color" :height="height" :width="width" v-if="loading_state == true"></scale-loader>
-        <div class="row text-center" v-if="loading_state == false">
+    <div class="container"  v-if="quiz_selection == true">
+        <div class="row text-center">
             <div class="header">
                 <img :src="current_quiz.header" class="quiz-img" style="width:100%;height:90%;">
             </div>
@@ -118,16 +116,69 @@
                     </div>
                 </div>
             </div>
-            <button class="flat-right btn previous-btn" v-if="previous_btn == true" v-on:click="previous">< Previous</v-btn>
-
+            <button class="flat-right btn previous-btn" v-if="previous_btn == true" v-on:click="previous">< Previous</button>
         </div>
         <vue-simple-progress  size="big" class="mt4" :val="progress_value" text-posit  ion="top"></vue-simple-progress>
-    </div>    
+    </div>   
+
+    <div class="container text-center" v-if="quiz_loading == true">
+        <scale-loader :color="color" :height="height" :width="width"></scale-loader>
+    </div>
+
+    <input type="checkbox" id="quiz_result_check" class="hidden">
+    <div class="container text-right">
+        {% if customer %}
+            <button class="flat-right btn next-btn" v-if="quiz_result == true" v-on:click="restart_quiz">Restart Quiz</button>
+        {% else  %}
+            <a class="flat-right btn next-btn" v-if="quiz_result == true" href="/account/register">Register</a>
+        {% endif %}
+    </div>
+
+
+    <div class="container" v-show="quiz_result == true">
+        {% assign products_per_row = settings.home_featured_products_num %}
+        {%- assign name_collection = section.settings.collection -%}
+        {% assign max_products = '50' %}
+
+        <div class="section-header text-center">
+            <h3 class="section-header--title">Quiz Result</h3>
+        </div>
+
+        <div class="carousel-products row" id="carousel2">
+        {% for product in collections['frontpage'].products limit: max_products %}
+            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3 col-xl-one-six">
+                {% include "integrabeauty-product-grid-item" hoverzoom: "false" %}
+            </div>
+        {% endfor %}
+        </div>
+
+  </div>
+    
+        
+     
+
 </div>
 
 <script>
+$(document).on('change', '#quiz_result_check', function(){
+    setTimeout(function(){
+        productCarousel(jQuery('#carousel2'),6,4,4,2,1);
+    }, 500);
+   
+});
+
+function triggerChange(){
+    $("#quiz_result_check").trigger("change");
+}
+
+
+
+
+
+
 var is_login = document.querySelector('#is_login');
 var flag = false;
+
 if(is_login == null)
 {
     flag = false;
@@ -146,13 +197,14 @@ var ScaleLoader = VueSpinner.ScaleLoader;
         },
     data() {
       return {
-          color: '#ff1d5e',
-          height: '35px',
-         width: '10px',
-         size: '100px',
-        loading: '3000',
+        color: '#ff1d5e',
+        height: '35px',
+        width: '10px',
+        size: '100px',
+        quiz_result:false,
         progress_value: 0,
-        loading_state: false,
+        quiz_loading: false,
+        quiz_selection: false,
         quiz_data:[
             { 
                 question:'In one word, your hair type:',
@@ -240,7 +292,6 @@ var ScaleLoader = VueSpinner.ScaleLoader;
         previous_btn: false,
         next_btn: false,
         current_count: 1,
-        quiz_order:1,
         itemclass:'',
         submit_btn:false,
         quiz_class:'col-xs-5 col-sm-2 quiz-answer',
@@ -254,8 +305,10 @@ var ScaleLoader = VueSpinner.ScaleLoader;
     created () {
         const data = JSON.parse(localStorage.getItem('results'));
             console.log(data);
-     this.init_quiz();
-      this.next_btn = true;
+        this.init_quiz();
+        this.next_btn = true;
+        this.quiz_selection = true;
+        
     },
     methods: {
         init_quiz(){
@@ -289,7 +342,6 @@ var ScaleLoader = VueSpinner.ScaleLoader;
             }
         },
         select(index){
-            console.log(this.quiz_data[this.selection].select);
             if(this.quiz_data[this.selection].select === '')
             {
                 this.select_count = this.select_count + 1;
@@ -302,14 +354,16 @@ var ScaleLoader = VueSpinner.ScaleLoader;
             }
             if(this.select_count == 8)
             {
-                this.loading_state = true;
+                this.quiz_loading = true;
+                this.quiz_selection = false;
                 var self = this;
                 this.save_localstorage();
-                {% comment %} setTimeout(function(){
-                    self.loading_state = false;
-                }, 3000); {% endcomment %}
+                setTimeout(function(){
+                    self.quiz_loading = false;
+                    self.quiz_result = true;
+                    triggerChange();
+                }, 3000);
             }
-            console.log('this.selction================', this.selection);
             console.log('this.quiz_data[this.selection].=============', this.quiz_data[this.selection]);
             console.log('this.quiz_data++++++++++++++++++++',this.quiz_data);
         },
@@ -317,11 +371,9 @@ var ScaleLoader = VueSpinner.ScaleLoader;
             if(action == 'next')
             {
                 this.selection = this.selection + 1;
-                this.quiz_order = this.quiz_order + 1;
             }
             else{
                 this.selection = this.selection - 1;
-                this.quiz_order = this.quiz_order - 1;
             }
 
         },
@@ -345,6 +397,26 @@ var ScaleLoader = VueSpinner.ScaleLoader;
             localStorage.setItem('results', JSON.stringify(this.quiz_data));
             const data = JSON.parse(localStorage.getItem('results'));
             console.log(data);
+        },
+        restart_quiz()
+        {
+            this.reset_data();
+        },
+        reset_data()
+        {
+            console.log(this.quiz_data);
+            for (var i=0;i<this.quiz_data.length;i++)
+            {
+                this.quiz_data[i].select = '';
+            }
+            this.selection = 0;
+            this.select_count = 0;
+            this.quiz_selection = true;
+            this.quiz_loading = false;
+            this.quiz_result = false;
+            this.current_quiz = this.quiz_data[this.selection];
+            this.progress_value = this.select_count * (100/8);
+            this.previous_btn = false;
         }
         
     },
