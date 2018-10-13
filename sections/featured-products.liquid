@@ -4,7 +4,6 @@
     {%- assign name_collection = section.settings.collection -%}
     {%- if name_collection == blank -%}{%- assign name_collection = "trending-products" -%}{%- endif -%}
     {%- assign collection = collections[name_collection] -%}
-    {{ name_collection }}
     {% if collection.products.size == 0 %}
     <span style="display: flex; justify-content: center;">{{ section.settings.title }}.&#160;Add products. Select collection in this section using the sidebar.</span>
     {% else %}

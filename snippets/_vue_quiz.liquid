@@ -1,7 +1,4 @@
-{% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.4/vue.js"></script> {% endcomment %}
-
 <style>
-
 #app_vue .quiz-answer .quiz-answer-label{
     padding-top: 3%;
     font-size: 16px;
@@ -13,7 +10,6 @@
     padding-top: 1%;
     font-size: 16px;
     font-weight: bold;
-
     display: inline-block;
     margin-bottom: 0;
     text-align: center;
@@ -153,16 +149,13 @@
         </div>
 
   </div>
-    
-        
-     
 
 </div>
 
 <script>
 $(document).on('change', '#quiz_result_check', function(){
     setTimeout(function(){
-        productCarousel(jQuery('#carousel2'),6,4,4,2,1);
+        productCarousel(jQuery('#carousel2'),8,4,4,2,1);
     }, 500);
    
 });
@@ -171,18 +164,12 @@ function triggerChange(){
     $("#quiz_result_check").trigger("change");
 }
 
-
-
-
-
-
 var is_login = document.querySelector('#is_login');
 var flag = false;
 
 if(is_login == null)
 {
     flag = false;
-    console.log('is_login-----------------',is_login);
 }
 else{
     flag = true;
@@ -314,7 +301,6 @@ var ScaleLoader = VueSpinner.ScaleLoader;
         init_quiz(){
             this.current_quiz = this.quiz_data[this.selection];
             this.current_count = this.current_quiz.answers.length;
-            console.log('here: ', this.current_quiz.answers);
             console.log(this.itemclass);
         },
         previous(){
@@ -364,8 +350,6 @@ var ScaleLoader = VueSpinner.ScaleLoader;
                     triggerChange();
                 }, 3000);
             }
-            console.log('this.quiz_data[this.selection].=============', this.quiz_data[this.selection]);
-            console.log('this.quiz_data++++++++++++++++++++',this.quiz_data);
         },
         calculate_quiz_order(action){
             if(action == 'next')
@@ -393,10 +377,8 @@ var ScaleLoader = VueSpinner.ScaleLoader;
         },
         save_localstorage()
         {
-            console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',this.quiz_data);
             localStorage.setItem('results', JSON.stringify(this.quiz_data));
             const data = JSON.parse(localStorage.getItem('results'));
-            console.log(data);
         },
         restart_quiz()
         {
@@ -404,7 +386,6 @@ var ScaleLoader = VueSpinner.ScaleLoader;
         },
         reset_data()
         {
-            console.log(this.quiz_data);
             for (var i=0;i<this.quiz_data.length;i++)
             {
                 this.quiz_data[i].select = '';
